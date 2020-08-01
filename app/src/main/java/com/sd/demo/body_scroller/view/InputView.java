@@ -23,7 +23,6 @@ public class InputView extends FrameLayout implements View.OnClickListener
     public static final String TAG = InputView.class.getSimpleName();
     private final ViewInputBinding mBinding;
 
-    private InputMoreView mMoreView;
     private final IFootPanel mExtFootPanel;
 
     public InputView(@NonNull Context context, @Nullable AttributeSet attrs)
@@ -39,15 +38,6 @@ public class InputView extends FrameLayout implements View.OnClickListener
         mBinding.btnMore.setOnClickListener(this);
     }
 
-    private InputMoreView getMoreView()
-    {
-        if (mMoreView == null)
-        {
-            mMoreView = new InputMoreView(getContext(), null);
-        }
-        return mMoreView;
-    }
-
     @Override
     public void onClick(View v)
     {
@@ -57,22 +47,23 @@ public class InputView extends FrameLayout implements View.OnClickListener
         } else if (v == mBinding.etContent)
         {
             mBodyScroller.setCurrentFootPanel(null);
-            mBinding.flExt.removeAllViews();
+
+            mBinding.viewInputMore.setVisibility(INVISIBLE);
             FKeyboardUtil.show(mBinding.etContent);
         }
     }
 
     private void clickMore()
     {
-        if (mBinding.flExt.getChildCount() > 0)
+        if (mBinding.viewInputMore.getVisibility() == VISIBLE)
         {
 
         } else
         {
             mBodyScroller.setCurrentFootPanel(mExtFootPanel);
+
             FKeyboardUtil.hide(mBinding.etContent);
-            mBinding.flExt.removeAllViews();
-            mBinding.flExt.addView(getMoreView());
+            mBinding.viewInputMore.setVisibility(VISIBLE);
         }
     }
 

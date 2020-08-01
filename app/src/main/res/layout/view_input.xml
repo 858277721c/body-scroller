@@ -41,6 +41,14 @@
     <FrameLayout
         android:id="@+id/fl_ext"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <com.sd.demo.body_scroller.view.InputMoreView
+            android:id="@+id/view_input_more"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible" />
+
+    </FrameLayout>
 
 </LinearLayout>
