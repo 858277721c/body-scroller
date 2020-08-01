@@ -52,7 +52,8 @@ public abstract class FBodyScroller
         if (panel instanceof KeyboardFootPanel)
         {
             mKeyboardFootPanel = (KeyboardFootPanel) panel;
-            setCurrentFootPanel(panel);
+            if (mCurrentFootPanel == null)
+                setCurrentFootPanel(panel);
         }
     }
 
@@ -68,6 +69,14 @@ public abstract class FBodyScroller
         {
             panel.setHeightChangeCallback(null);
             panel.setPanelActive(false);
+
+            if (panel == mCurrentFootPanel)
+            {
+                if (panel == mKeyboardFootPanel)
+                    mKeyboardFootPanel = null;
+
+                setCurrentFootPanel(null);
+            }
         }
     }
 
