@@ -24,6 +24,7 @@ public class InputView extends FrameLayout implements View.OnClickListener
     private final ViewInputBinding mBinding;
 
     private final IFootPanel mExtFootPanel;
+    private InputMoreView mMoreView;
 
     public InputView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
@@ -48,34 +49,45 @@ public class InputView extends FrameLayout implements View.OnClickListener
         {
             mBodyScroller.setCurrentFootPanel(null);
 
-            mBinding.viewInputMore.setVisibility(INVISIBLE);
+            mBinding.flExt.removeAllViews();
             FKeyboardUtil.show(mBinding.etContent);
         }
     }
 
+    private InputMoreView getMoreView()
+    {
+        if (mMoreView == null)
+            mMoreView = new InputMoreView(getContext(), null);
+        return mMoreView;
+    }
+
     private void clickMore()
     {
-        if (mBinding.viewInputMore.getVisibility() == VISIBLE)
-        {
-
-        } else
+        if (getMoreView().getParent() != mBinding.flExt)
         {
             mBodyScroller.setCurrentFootPanel(mExtFootPanel);
 
+            mBinding.flExt.removeAllViews();
+            mBinding.flExt.addView(getMoreView());
             FKeyboardUtil.hide(mBinding.etContent);
-            mBinding.viewInputMore.setVisibility(VISIBLE);
         }
     }
 
     private final FBodyScroller mBodyScroller = new FBodyScroller()
     {
         @Override
-        protected void onFootHeightChanged(int oldHeight, int newHeight)
+        protected void onFootHeightChanged(int oldHeight, final int newHeight, IFootPanel currentFootPanel)
         {
             final int delta = newHeight - oldHeight;
             Log.i(TAG, "onFootHeightChanged oldHeight:" + oldHeight + " newHeight:" + newHeight + " delta:" + delta);
 
-            mBinding.llRoot.scrollTo(0, newHeight);
+            if (currentFootPanel instanceof KeyboardFootPanel)
+            {
+                mBinding.llRoot.scrollTo(0, newHeight);
+            } else
+            {
+                mBinding.llRoot.scrollTo(0, 0);
+            }
         }
     };
 }

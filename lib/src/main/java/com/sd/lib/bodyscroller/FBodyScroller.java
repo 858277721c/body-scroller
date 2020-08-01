@@ -15,14 +15,9 @@ public abstract class FBodyScroller
 
     private int mFootHeight;
 
-    /**
-     * 底部高度
-     *
-     * @return
-     */
-    public int getFootHeight()
+    public IFootPanel getCurrentFootPanel()
     {
-        return mFootHeight;
+        return mCurrentFootPanel;
     }
 
     /**
@@ -119,9 +114,9 @@ public abstract class FBodyScroller
         if (old != height)
         {
             mFootHeight = height;
-            onFootHeightChanged(old, height);
+            onFootHeightChanged(old, height, mCurrentFootPanel);
         }
     }
 
-    protected abstract void onFootHeightChanged(int oldHeight, int newHeight);
+    protected abstract void onFootHeightChanged(int oldHeight, int newHeight, IFootPanel currentFootPanel);
 }

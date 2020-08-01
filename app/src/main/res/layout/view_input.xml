@@ -3,52 +3,37 @@
     android:id="@+id/ll_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+        <EditText
+            android:id="@+id/et_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <Button
+            android:id="@+id/btn_more"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/et_content"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/btn_more"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="更多" />
-
-        </LinearLayout>
+            android:text="更多" />
 
     </LinearLayout>
 
     <FrameLayout
         android:id="@+id/fl_ext"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.sd.demo.body_scroller.view.InputMoreView
-            android:id="@+id/view_input_more"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="invisible" />
-
-    </FrameLayout>
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
