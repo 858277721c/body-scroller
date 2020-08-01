@@ -13,7 +13,9 @@ import androidx.annotation.Nullable;
 
 import com.sd.demo.body_scroller.databinding.ViewInputBinding;
 import com.sd.lib.bodyscroller.FBodyScroller;
+import com.sd.lib.bodyscroller.panel.IFootPanel;
 import com.sd.lib.bodyscroller.panel.KeyboardFootPanel;
+import com.sd.lib.bodyscroller.panel.ViewFootPanel;
 import com.sd.lib.utils.FKeyboardUtil;
 
 public class InputView extends FrameLayout implements View.OnClickListener
@@ -22,14 +24,16 @@ public class InputView extends FrameLayout implements View.OnClickListener
     private final ViewInputBinding mBinding;
 
     private InputMoreView mMoreView;
+    private final IFootPanel mExtFootPanel;
 
     public InputView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
         mBinding = ViewInputBinding.inflate(LayoutInflater.from(context), this, true);
+        mExtFootPanel = new ViewFootPanel(mBinding.flExt);
 
         mBodyScroller.addFootPanel(new KeyboardFootPanel((Activity) context));
-        mBodyScroller.addFootPanel(getMoreView().getFootPanel());
+        mBodyScroller.addFootPanel(mExtFootPanel);
 
         mBinding.etContent.setOnClickListener(this);
         mBinding.btnMore.setOnClickListener(this);
@@ -65,7 +69,7 @@ public class InputView extends FrameLayout implements View.OnClickListener
 
         } else
         {
-            mBodyScroller.setCurrentFootPanel(getMoreView().getFootPanel());
+            mBodyScroller.setCurrentFootPanel(mExtFootPanel);
             FKeyboardUtil.hide(mBinding.etContent);
             mBinding.flExt.removeAllViews();
             mBinding.flExt.addView(getMoreView());
