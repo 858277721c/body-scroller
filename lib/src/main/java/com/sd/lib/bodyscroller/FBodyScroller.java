@@ -106,7 +106,8 @@ public abstract class FBodyScroller
             mCurrentFootPanel = panel;
 
             final int height = panel.getPanelHeight();
-            setFootHeight(height);
+            if (height > 0)
+                setFootHeight(height);
         }
     }
 
@@ -116,29 +117,9 @@ public abstract class FBodyScroller
         if (old != height)
         {
             mFootHeight = height;
-
-            final int delta = height - old;
-            if (delta > 0)
-            {
-                moveBodyUp(delta);
-            } else
-            {
-                moveBodyDown(Math.abs(delta));
-            }
+            onFootHeightChanged(old, height);
         }
     }
 
-    /**
-     * 把body往上移动
-     *
-     * @param delta
-     */
-    protected abstract void moveBodyUp(int delta);
-
-    /**
-     * 把body往下移动
-     *
-     * @param delta
-     */
-    protected abstract void moveBodyDown(int delta);
+    protected abstract void onFootHeightChanged(int oldHeight, int newHeight);
 }
