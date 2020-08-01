@@ -1,5 +1,7 @@
 package com.sd.lib.bodyscroller;
 
+import com.sd.lib.bodyscroller.panel.IFootPanel;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,9 +44,7 @@ public abstract class FBodyScroller
 
         panel.setHeightChangeCallback(callback);
         mMapFootPanel.put(panel, callback);
-
-        if (panel instanceof KeyboardFootPanel)
-            ((KeyboardFootPanel) panel).start();
+        panel.setPanelActive(true);
     }
 
     /**
@@ -58,8 +58,7 @@ public abstract class FBodyScroller
         if (callback != null)
         {
             panel.setHeightChangeCallback(null);
-            if (panel instanceof KeyboardFootPanel)
-                ((KeyboardFootPanel) panel).stop();
+            panel.setPanelActive(false);
         }
     }
 

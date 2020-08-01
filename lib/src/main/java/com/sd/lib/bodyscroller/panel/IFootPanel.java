@@ -1,4 +1,4 @@
-package com.sd.lib.bodyscroller;
+package com.sd.lib.bodyscroller.panel;
 
 public interface IFootPanel
 {
@@ -15,6 +15,13 @@ public interface IFootPanel
      * @param callback
      */
     void setHeightChangeCallback(HeightChangeCallback callback);
+
+    /**
+     * 设置面板是否处于活动状态
+     *
+     * @param active
+     */
+    void setPanelActive(boolean active);
 
     interface HeightChangeCallback
     {

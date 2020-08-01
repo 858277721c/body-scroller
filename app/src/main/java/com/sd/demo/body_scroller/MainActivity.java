@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.sd.demo.body_scroller.databinding.ActivityMainBinding;
 import com.sd.lib.bodyscroller.FBodyScroller;
-import com.sd.lib.bodyscroller.KeyboardFootPanel;
+import com.sd.lib.bodyscroller.panel.KeyboardFootPanel;
 import com.sd.lib.bodyscroller.ext.FKeyboardListener;
 
 public class MainActivity extends AppCompatActivity

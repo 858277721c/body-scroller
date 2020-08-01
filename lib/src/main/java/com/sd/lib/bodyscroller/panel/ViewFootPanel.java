@@ -1,16 +1,22 @@
-package com.sd.lib.bodyscroller;
+package com.sd.lib.bodyscroller.panel;
 
 import android.view.View;
 
+import java.lang.ref.WeakReference;
+
 public class ViewFootPanel implements IFootPanel
 {
-    private final View mView;
+    private final WeakReference<View> mView;
     private HeightChangeCallback mCallback;
 
     public ViewFootPanel(View view)
     {
-        mView = view;
-        mView.addOnLayoutChangeListener(mOnLayoutChangeListener);
+        mView = new WeakReference<>(view);
+    }
+
+    private View getView()
+    {
+        return mView.get();
     }
 
     private final View.OnLayoutChangeListener mOnLayoutChangeListener = new View.OnLayoutChangeListener()
@@ -27,12 +33,28 @@ public class ViewFootPanel implements IFootPanel
     @Override
     public int getPanelHeight()
     {
-        return mView.getHeight();
+        final View view = getView();
+        if (view == null)
+            return 0;
+
+        return view.getHeight();
     }
 
     @Override
     public void setHeightChangeCallback(HeightChangeCallback callback)
     {
         mCallback = callback;
+    }
+
+    @Override
+    public void setPanelActive(boolean active)
+    {
+        final View view = getView();
+        if (view == null)
+            return;
+
+        view.removeOnLayoutChangeListener(mOnLayoutChangeListener);
+        if (active)
+            view.addOnLayoutChangeListener(mOnLayoutChangeListener);
     }
 }

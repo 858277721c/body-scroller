@@ -1,4 +1,4 @@
-package com.sd.lib.bodyscroller;
+package com.sd.lib.bodyscroller.panel;
 
 import android.app.Activity;
 
@@ -22,16 +22,6 @@ public class KeyboardFootPanel implements IFootPanel
         };
     }
 
-    void start()
-    {
-        mKeyboardListener.start();
-    }
-
-    void stop()
-    {
-        mKeyboardListener.stop();
-    }
-
     private void setHeight(int height)
     {
         if (mHeight != height)
@@ -53,5 +43,14 @@ public class KeyboardFootPanel implements IFootPanel
     public void setHeightChangeCallback(IFootPanel.HeightChangeCallback callback)
     {
         mHeightChangeCallback = callback;
+    }
+
+    @Override
+    public void setPanelActive(boolean active)
+    {
+        if (active)
+            mKeyboardListener.start();
+        else
+            mKeyboardListener.stop();
     }
 }
