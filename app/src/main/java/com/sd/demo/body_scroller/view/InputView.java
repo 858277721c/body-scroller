@@ -1,5 +1,7 @@
 package com.sd.demo.body_scroller.view;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
@@ -84,4 +86,15 @@ public class InputView extends FrameLayout implements View.OnClickListener
             mBinding.llRoot.scrollTo(0, newHeight);
         }
     };
+
+    private void moveByAnimator(int newHeight)
+    {
+        final ObjectAnimator animatorBody = ObjectAnimator.ofFloat(mBinding.llBody, View.TRANSLATION_Y, mBinding.llBody.getTranslationY(), -newHeight);
+        final ObjectAnimator animatorExt = ObjectAnimator.ofFloat(mBinding.viewExt, View.TRANSLATION_Y, mBinding.viewExt.getTranslationY(), -newHeight);
+
+        final AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(animatorBody).with(animatorExt);
+        animatorSet.setDuration(100);
+        animatorSet.start();
+    }
 }
