@@ -7,7 +7,7 @@ import com.sd.lib.bodyscroller.ext.FKeyboardListener;
 public class KeyboardFootPanel implements IFootPanel
 {
     private final FKeyboardListener mKeyboardListener;
-    private IFootPanel.HeightChangeCallback mHeightChangeCallback;
+    private IFootPanel.HeightChangeCallback mCallback;
     private int mHeight;
 
     public KeyboardFootPanel(Activity activity)
@@ -30,8 +30,8 @@ public class KeyboardFootPanel implements IFootPanel
         {
             mHeight = height;
 
-            if (mHeightChangeCallback != null)
-                mHeightChangeCallback.onHeightChanged(height);
+            if (mCallback != null)
+                mCallback.onHeightChanged(height);
         }
     }
 
@@ -44,7 +44,7 @@ public class KeyboardFootPanel implements IFootPanel
     @Override
     public void setHeightChangeCallback(IFootPanel.HeightChangeCallback callback)
     {
-        mHeightChangeCallback = callback;
+        mCallback = callback;
     }
 
     @Override
