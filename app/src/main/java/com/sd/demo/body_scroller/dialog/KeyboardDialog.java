@@ -1,9 +1,10 @@
-package com.sd.demo.body_scroller;
+package com.sd.demo.body_scroller.dialog;
 
 import android.app.Activity;
 import android.util.Log;
 import android.view.WindowManager;
 
+import com.sd.demo.body_scroller.R;
 import com.sd.lib.bodyscroller.ext.FKeyboardListener;
 import com.sd.lib.dialoger.impl.FDialoger;
 
