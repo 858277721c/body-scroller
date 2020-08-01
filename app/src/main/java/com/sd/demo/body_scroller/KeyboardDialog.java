@@ -20,10 +20,10 @@ public class KeyboardDialog extends FDialoger
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
     }
 
-    private final FKeyboardListener mKeyboardListener = new FKeyboardListener(getOwnerActivity())
+    private final FKeyboardListener.Callback mKeyboardCallback = new FKeyboardListener.Callback()
     {
         @Override
-        protected void onKeyboardHeightChanged(int oldHeight, int newHeight)
+        public void onKeyboardHeightChanged(int oldHeight, int newHeight)
         {
             Log.i(TAG, "FKeyboardListener onKeyboardHeightChanged oldHeight:" + oldHeight + " newHeight:" + newHeight);
         }
@@ -33,13 +33,13 @@ public class KeyboardDialog extends FDialoger
     protected void onStart()
     {
         super.onStart();
-        mKeyboardListener.start();
+        FKeyboardListener.of(getOwnerActivity()).addCallback(mKeyboardCallback);
     }
 
     @Override
     protected void onStop()
     {
         super.onStop();
-        mKeyboardListener.stop();
+        FKeyboardListener.of(getOwnerActivity()).removeCallback(mKeyboardCallback);
     }
 }

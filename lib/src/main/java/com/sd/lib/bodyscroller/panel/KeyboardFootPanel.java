@@ -12,15 +12,17 @@ public class KeyboardFootPanel implements IFootPanel
 
     public KeyboardFootPanel(Activity activity)
     {
-        mKeyboardListener = new FKeyboardListener(activity)
-        {
-            @Override
-            protected void onKeyboardHeightChanged(int oldHeight, int newHeight)
-            {
-                KeyboardFootPanel.this.setHeight(newHeight);
-            }
-        };
+        mKeyboardListener = FKeyboardListener.of(activity);
     }
+
+    private final FKeyboardListener.Callback mKeyboardCallback = new FKeyboardListener.Callback()
+    {
+        @Override
+        public void onKeyboardHeightChanged(int oldHeight, int newHeight)
+        {
+            KeyboardFootPanel.this.setHeight(newHeight);
+        }
+    };
 
     private void setHeight(int height)
     {
@@ -49,8 +51,8 @@ public class KeyboardFootPanel implements IFootPanel
     public void setPanelActive(boolean active)
     {
         if (active)
-            mKeyboardListener.start();
+            mKeyboardListener.addCallback(mKeyboardCallback);
         else
-            mKeyboardListener.stop();
+            mKeyboardListener.removeCallback(mKeyboardCallback);
     }
 }

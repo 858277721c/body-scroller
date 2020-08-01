@@ -1,10 +1,12 @@
 package com.sd.lib.bodyscroller.ext;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +15,17 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * 键盘监听
  */
-public abstract class FKeyboardListener extends PopupWindow
+public class FKeyboardListener extends PopupWindow
 {
     private final Activity mActivity;
+
     private InternalPopupWindow mPopupWindow;
     private final Rect mRect = new Rect();
 
@@ -26,16 +33,31 @@ public abstract class FKeyboardListener extends PopupWindow
     private int mMaxWindowHeight;
     private int mKeyboardHeight;
 
-    public FKeyboardListener(Activity activity)
+    private final Map<Callback, String> mCallbacks = new ConcurrentHashMap<>();
+
+    private FKeyboardListener(Activity activity)
     {
         mActivity = activity;
     }
 
-    private InternalPopupWindow getPopupWindow()
+    /**
+     * 添加回调
+     *
+     * @param callback
+     */
+    public void addCallback(Callback callback)
     {
-        if (mPopupWindow == null)
-            mPopupWindow = new InternalPopupWindow(mActivity);
-        return mPopupWindow;
+        mCallbacks.put(callback, "");
+    }
+
+    /**
+     * 移除回调
+     *
+     * @param callback
+     */
+    public void removeCallback(Callback callback)
+    {
+        mCallbacks.remove(callback);
     }
 
     private final ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
@@ -78,8 +100,15 @@ public abstract class FKeyboardListener extends PopupWindow
     /**
      * 开始监听
      */
-    public final void start()
+    private final void start()
     {
+        if (mActivity.isFinishing())
+            return;
+
+        final Application application = mActivity.getApplication();
+        application.unregisterActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
+        application.registerActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
+
         getTarget().removeCallbacks(mShowRunnable);
         getTarget().post(mShowRunnable);
     }
@@ -89,15 +118,21 @@ public abstract class FKeyboardListener extends PopupWindow
         @Override
         public void run()
         {
-            getPopupWindow().showAtLocation(getTarget(), Gravity.NO_GRAVITY, 0, 0);
+            if (mPopupWindow == null)
+                mPopupWindow = new InternalPopupWindow(mActivity);
+
+            mPopupWindow.showAtLocation(getTarget(), Gravity.NO_GRAVITY, 0, 0);
         }
     };
 
     /**
      * 停止监听
      */
-    public final void stop()
+    private final void stop()
     {
+        final Application application = mActivity.getApplication();
+        application.unregisterActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
+
         getTarget().removeCallbacks(mShowRunnable);
 
         if (mPopupWindow != null)
@@ -111,7 +146,7 @@ public abstract class FKeyboardListener extends PopupWindow
         }
     }
 
-    protected void onWindowHeightChanged(int oldHeight, int newHeight)
+    private void onWindowHeightChanged(int oldHeight, int newHeight)
     {
     }
 
@@ -121,7 +156,13 @@ public abstract class FKeyboardListener extends PopupWindow
      * @param oldHeight
      * @param newHeight
      */
-    protected abstract void onKeyboardHeightChanged(int oldHeight, int newHeight);
+    private void onKeyboardHeightChanged(int oldHeight, int newHeight)
+    {
+        for (Callback item : mCallbacks.keySet())
+        {
+            item.onKeyboardHeightChanged(oldHeight, newHeight);
+        }
+    }
 
     private final class InternalPopupWindow extends PopupWindow implements View.OnAttachStateChangeListener
     {
@@ -151,5 +192,82 @@ public abstract class FKeyboardListener extends PopupWindow
         {
             v.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
         }
+    }
+
+    private final Application.ActivityLifecycleCallbacks mActivityLifecycleCallbacks = new Application.ActivityLifecycleCallbacks()
+    {
+        @Override
+        public void onActivityCreated(Activity activity, Bundle savedInstanceState)
+        {
+        }
+
+        @Override
+        public void onActivityStarted(Activity activity)
+        {
+        }
+
+        @Override
+        public void onActivityResumed(Activity activity)
+        {
+        }
+
+        @Override
+        public void onActivityPaused(Activity activity)
+        {
+        }
+
+        @Override
+        public void onActivityStopped(Activity activity)
+        {
+        }
+
+        @Override
+        public void onActivitySaveInstanceState(Activity activity, Bundle outState)
+        {
+        }
+
+        @Override
+        public void onActivityDestroyed(Activity activity)
+        {
+            if (mActivity == activity)
+                removeActivity(activity);
+        }
+    };
+
+    public interface Callback
+    {
+        /**
+         * 键盘高度变化回调
+         *
+         * @param oldHeight
+         * @param newHeight
+         */
+        void onKeyboardHeightChanged(int oldHeight, int newHeight);
+    }
+
+    //---------- static ----------
+
+    private static final Map<Activity, FKeyboardListener> MAP_LISTENER = new WeakHashMap<>();
+
+    public static synchronized FKeyboardListener of(Activity activity)
+    {
+        FKeyboardListener listener = MAP_LISTENER.get(activity);
+        if (listener == null)
+        {
+            listener = new FKeyboardListener(activity);
+            if (!activity.isFinishing())
+            {
+                MAP_LISTENER.put(activity, listener);
+                listener.start();
+            }
+        }
+        return listener;
+    }
+
+    private static synchronized void removeActivity(Activity activity)
+    {
+        final FKeyboardListener listener = MAP_LISTENER.remove(activity);
+        if (listener != null)
+            listener.stop();
     }
 }

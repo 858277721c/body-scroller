@@ -21,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         mBinding.btnKeyboard.setOnClickListener(this);
         mBinding.btnBodyScroller.setOnClickListener(this);
+
+        new KeyboardDialog(this).show();
     }
 
     @Override

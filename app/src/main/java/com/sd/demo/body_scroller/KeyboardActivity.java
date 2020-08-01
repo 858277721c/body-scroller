@@ -23,24 +23,13 @@ public class KeyboardActivity extends AppCompatActivity
         mBinding = ActivityKeyboardBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        mKeyboardListener.start();
+        FKeyboardListener.of(this).addCallback(new FKeyboardListener.Callback()
+        {
+            @Override
+            public void onKeyboardHeightChanged(int oldHeight, int newHeight)
+            {
+                Log.i(TAG, "FKeyboardListener onKeyboardHeightChanged oldHeight:" + oldHeight + " newHeight:" + newHeight);
+            }
+        });
     }
-
-    /**
-     * 软键盘监听
-     */
-    private final FKeyboardListener mKeyboardListener = new FKeyboardListener(this)
-    {
-        @Override
-        protected void onWindowHeightChanged(int oldHeight, int newHeight)
-        {
-            Log.i(TAG, "FKeyboardListener onWindowHeightChanged oldHeight:" + oldHeight + " newHeight:" + newHeight);
-        }
-
-        @Override
-        protected void onKeyboardHeightChanged(int oldHeight, int newHeight)
-        {
-            Log.i(TAG, "FKeyboardListener onKeyboardHeightChanged oldHeight:" + oldHeight + " newHeight:" + newHeight);
-        }
-    };
 }
