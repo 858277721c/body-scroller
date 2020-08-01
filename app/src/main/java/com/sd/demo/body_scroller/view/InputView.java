@@ -15,6 +15,7 @@ import com.sd.demo.body_scroller.databinding.ViewInputBinding;
 import com.sd.lib.bodyscroller.FBodyScroller;
 import com.sd.lib.bodyscroller.panel.IFootPanel;
 import com.sd.lib.bodyscroller.panel.KeyboardFootPanel;
+import com.sd.lib.bodyscroller.panel.ViewFootPanel;
 import com.sd.lib.utils.FKeyboardUtil;
 
 public class InputView extends FrameLayout implements View.OnClickListener
@@ -23,14 +24,16 @@ public class InputView extends FrameLayout implements View.OnClickListener
     private final ViewInputBinding mBinding;
 
     private InputMoreView mMoreView;
+    private final IFootPanel mExtPanel;
 
     public InputView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
         mBinding = ViewInputBinding.inflate(LayoutInflater.from(context), this, true);
+        mExtPanel = new ViewFootPanel(mBinding.viewExt);
 
         mBodyScroller.addFootPanel(new KeyboardFootPanel((Activity) context));
-        mBodyScroller.addFootPanel(getMoreView().getFootPanel());
+        mBodyScroller.addFootPanel(mExtPanel);
 
         mBinding.etContent.setOnClickListener(this);
         mBinding.btnMore.setOnClickListener(this);
@@ -62,7 +65,7 @@ public class InputView extends FrameLayout implements View.OnClickListener
     {
         if (getMoreView().getParent() != mBinding.viewExt)
         {
-            mBodyScroller.setCurrentFootPanel(getMoreView().getFootPanel());
+            mBodyScroller.setCurrentFootPanel(mExtPanel);
 
             mBinding.viewExt.removeAllViews();
             mBinding.viewExt.addView(getMoreView());
