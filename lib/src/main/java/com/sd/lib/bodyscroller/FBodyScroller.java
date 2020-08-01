@@ -45,9 +45,8 @@ public abstract class FBodyScroller
             }
         };
 
-        panel.setHeightChangeCallback(callback);
         mMapFootPanel.put(panel, callback);
-        panel.setPanelActive(true);
+        panel.initPanel(callback);
 
         if (panel instanceof KeyboardFootPanel)
         {
@@ -67,9 +66,7 @@ public abstract class FBodyScroller
         final IFootPanel.HeightChangeCallback callback = mMapFootPanel.remove(panel);
         if (callback != null)
         {
-            panel.setHeightChangeCallback(null);
-            panel.setPanelActive(false);
-
+            panel.releasePanel();
             if (panel == mCurrentFootPanel)
             {
                 if (panel == mKeyboardFootPanel)

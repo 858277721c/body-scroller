@@ -1,5 +1,7 @@
 package com.sd.lib.bodyscroller.panel;
 
+import com.sd.lib.bodyscroller.FBodyScroller;
+
 public interface IFootPanel
 {
     /**
@@ -10,18 +12,16 @@ public interface IFootPanel
     int getPanelHeight();
 
     /**
-     * 面板高度变化回调
+     * 当面板被添加到{@link FBodyScroller}的时候触发
      *
      * @param callback
      */
-    void setHeightChangeCallback(HeightChangeCallback callback);
+    void initPanel(HeightChangeCallback callback);
 
     /**
-     * 设置面板是否处于活动状态
-     *
-     * @param active
+     * 当面板从{@link FBodyScroller}移除的时候触发
      */
-    void setPanelActive(boolean active);
+    void releasePanel();
 
     interface HeightChangeCallback
     {

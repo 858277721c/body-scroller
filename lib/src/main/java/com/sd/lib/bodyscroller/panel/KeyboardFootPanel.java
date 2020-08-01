@@ -42,17 +42,16 @@ public class KeyboardFootPanel implements IFootPanel
     }
 
     @Override
-    public void setHeightChangeCallback(IFootPanel.HeightChangeCallback callback)
+    public void initPanel(HeightChangeCallback callback)
     {
         mCallback = callback;
+        mKeyboardListener.addCallback(mKeyboardCallback);
     }
 
     @Override
-    public void setPanelActive(boolean active)
+    public void releasePanel()
     {
-        if (active)
-            mKeyboardListener.addCallback(mKeyboardCallback);
-        else
-            mKeyboardListener.removeCallback(mKeyboardCallback);
+        mCallback = null;
+        mKeyboardListener.removeCallback(mKeyboardCallback);
     }
 }

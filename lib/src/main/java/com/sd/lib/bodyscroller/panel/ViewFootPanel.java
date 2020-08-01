@@ -44,20 +44,25 @@ public class ViewFootPanel implements IFootPanel
     }
 
     @Override
-    public void setHeightChangeCallback(HeightChangeCallback callback)
-    {
-        mCallback = callback;
-    }
-
-    @Override
-    public void setPanelActive(boolean active)
+    public void initPanel(HeightChangeCallback callback)
     {
         final View view = getView();
         if (view == null)
             return;
 
+        mCallback = callback;
         view.removeOnLayoutChangeListener(mOnLayoutChangeListener);
-        if (active)
-            view.addOnLayoutChangeListener(mOnLayoutChangeListener);
+        view.addOnLayoutChangeListener(mOnLayoutChangeListener);
+    }
+
+    @Override
+    public void releasePanel()
+    {
+        final View view = getView();
+        if (view == null)
+            return;
+
+        mCallback = null;
+        view.removeOnLayoutChangeListener(mOnLayoutChangeListener);
     }
 }
