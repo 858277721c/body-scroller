@@ -76,7 +76,7 @@ public class InputView extends FrameLayout implements View.OnClickListener
     private final FBodyScroller mBodyScroller = new FBodyScroller()
     {
         @Override
-        protected void onFootHeightChanged(int oldHeight, final int newHeight, IFootPanel currentFootPanel)
+        protected void onFootHeightChanged(int oldHeight, final int newHeight)
         {
             final int delta = newHeight - oldHeight;
             Log.i(TAG, "onFootHeightChanged oldHeight:" + oldHeight + " newHeight:" + newHeight + " delta:" + delta);
