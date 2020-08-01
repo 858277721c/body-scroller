@@ -96,7 +96,9 @@ public abstract class FBodyScroller
             } else
             {
                 mCurrentFootPanel = mKeyboardFootPanel;
-                setFootHeight(mKeyboardFootPanel.getPanelHeight());
+                final int height = mKeyboardFootPanel.getPanelHeight();
+                if (height > 0)
+                    setFootHeight(height);
             }
             return;
         }
