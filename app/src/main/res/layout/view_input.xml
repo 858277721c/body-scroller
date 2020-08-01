@@ -4,36 +4,45 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
+    android:clipChildren="false"
     android:orientation="vertical">
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/et_content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1" />
 
-        <Button
-            android:id="@+id/btn_more"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="更多" />
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/et_content"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btn_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="更多" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/fl_ext"
+    <LinearLayout
+        android:id="@+id/view_ext"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="1000dp"
+        android:orientation="vertical" />
 
 </LinearLayout>
