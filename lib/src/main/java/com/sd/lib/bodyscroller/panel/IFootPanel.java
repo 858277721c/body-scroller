@@ -3,7 +3,7 @@ package com.sd.lib.bodyscroller.panel;
 public interface IFootPanel
 {
     /**
-     * 返回面板高度
+     * 返回面板当前的高度
      *
      * @return
      */
