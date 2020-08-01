@@ -75,8 +75,26 @@ public abstract class FKeyboardListener extends PopupWindow
      */
     public final void start()
     {
+        removeShowRunnable();
+
         final View target = mActivity.findViewById(Window.ID_ANDROID_CONTENT);
-        getPopupWindow().showAtLocation(target, Gravity.NO_GRAVITY, 0, 0);
+        target.post(mShowRunnable);
+    }
+
+    private final Runnable mShowRunnable = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            final View target = mActivity.findViewById(Window.ID_ANDROID_CONTENT);
+            getPopupWindow().showAtLocation(target, Gravity.NO_GRAVITY, 0, 0);
+        }
+    };
+
+    private void removeShowRunnable()
+    {
+        final View target = mActivity.findViewById(Window.ID_ANDROID_CONTENT);
+        target.removeCallbacks(mShowRunnable);
     }
 
     /**
@@ -84,6 +102,8 @@ public abstract class FKeyboardListener extends PopupWindow
      */
     public final void stop()
     {
+        removeShowRunnable();
+
         if (mPopupWindow != null)
         {
             mPopupWindow.dismiss();

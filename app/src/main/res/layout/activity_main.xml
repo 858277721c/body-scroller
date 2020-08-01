@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/view_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_content"
+    <Button
+        android:id="@+id/btn_keyboard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom" />
+        android:text="KeyboardActivity"
+        android:textAllCaps="false" />
+
+    <Button
+        android:id="@+id/btn_body_scroller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="BodyScrollerActivity"
+        android:textAllCaps="false" />
 
 </LinearLayout>

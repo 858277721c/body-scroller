@@ -1,6 +1,7 @@
 package com.sd.lib.bodyscroller;
 
 import com.sd.lib.bodyscroller.panel.IFootPanel;
+import com.sd.lib.bodyscroller.panel.KeyboardFootPanel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +10,9 @@ public abstract class FBodyScroller
 {
     private final Map<IFootPanel, IFootPanel.HeightChangeCallback> mMapFootPanel = new HashMap<>();
 
-    private IFootPanel mActiveFootPanel;
+    private IFootPanel mCurrentFootPanel;
+    private KeyboardFootPanel mKeyboardFootPanel;
+
     private int mFootHeight;
 
     /**
@@ -37,7 +40,7 @@ public abstract class FBodyScroller
             @Override
             public void onHeightChanged(int height)
             {
-                if (mActiveFootPanel == panel)
+                if (mCurrentFootPanel == panel)
                     setFootHeight(height);
             }
         };
@@ -45,6 +48,12 @@ public abstract class FBodyScroller
         panel.setHeightChangeCallback(callback);
         mMapFootPanel.put(panel, callback);
         panel.setPanelActive(true);
+
+        if (panel instanceof KeyboardFootPanel)
+        {
+            mKeyboardFootPanel = (KeyboardFootPanel) panel;
+            setCurrentFootPanel(panel);
+        }
     }
 
     /**
@@ -67,18 +76,25 @@ public abstract class FBodyScroller
      *
      * @param panel
      */
-    public void setActiveFootPanel(IFootPanel panel)
+    public void setCurrentFootPanel(IFootPanel panel)
     {
         if (panel == null)
         {
-            mActiveFootPanel = null;
-            setFootHeight(0);
+            if (mKeyboardFootPanel == null)
+            {
+                mCurrentFootPanel = null;
+                setFootHeight(0);
+            } else
+            {
+                mCurrentFootPanel = mKeyboardFootPanel;
+                setFootHeight(mKeyboardFootPanel.getPanelHeight());
+            }
             return;
         }
 
         if (mMapFootPanel.containsKey(panel))
         {
-            mActiveFootPanel = panel;
+            mCurrentFootPanel = panel;
 
             final int height = panel.getPanelHeight();
             setFootHeight(height);

@@ -1,24 +1,16 @@
 package com.sd.demo.body_scroller;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.sd.demo.body_scroller.databinding.ActivityMainBinding;
-import com.sd.lib.bodyscroller.FBodyScroller;
-import com.sd.lib.bodyscroller.panel.KeyboardFootPanel;
-import com.sd.lib.bodyscroller.ext.FKeyboardListener;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
-    private static final String TAG = MainActivity.class.getSimpleName();
-
     private ActivityMainBinding mBinding;
-    private FKeyboardListener mKeyboardListener;
-
-    private FBodyScroller mBodyScroller;
-    private final KeyboardFootPanel mKeyboardFootPanel = new KeyboardFootPanel(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -27,62 +19,19 @@ public class MainActivity extends AppCompatActivity
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        mBinding.getRoot().post(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                getKeyboardListener().start();
-                getBodyScroller().setActiveFootPanel(mKeyboardFootPanel);
-            }
-        });
+        mBinding.btnKeyboard.setOnClickListener(this);
+        mBinding.btnBodyScroller.setOnClickListener(this);
     }
 
-    private FBodyScroller getBodyScroller()
+    @Override
+    public void onClick(View v)
     {
-        if (mBodyScroller == null)
+        if (v == mBinding.btnKeyboard)
         {
-            mBodyScroller = new FBodyScroller()
-            {
-                @Override
-                protected void moveBodyUp(int delta)
-                {
-                    Log.i(TAG, "moveBodyUp delta:" + delta);
-                    mBinding.viewRoot.scrollBy(0, delta);
-                }
-
-                @Override
-                protected void moveBodyDown(int delta)
-                {
-                    Log.i(TAG, "moveBodyDown delta:" + delta);
-                    mBinding.viewRoot.scrollBy(0, -delta);
-                }
-            };
-
-            mBodyScroller.addFootPanel(mKeyboardFootPanel);
-        }
-        return mBodyScroller;
-    }
-
-    private FKeyboardListener getKeyboardListener()
-    {
-        if (mKeyboardListener == null)
+            startActivity(new Intent(this, KeyboardActivity.class));
+        } else if (v == mBinding.btnBodyScroller)
         {
-            mKeyboardListener = new FKeyboardListener(this)
-            {
-                @Override
-                protected void onWindowHeightChanged(int oldHeight, int newHeight)
-                {
-                    Log.i(TAG, "FKeyboardListener onWindowHeightChanged oldHeight:" + oldHeight + " newHeight:" + newHeight);
-                }
-
-                @Override
-                protected void onKeyboardHeightChanged(int oldHeight, int newHeight)
-                {
-                    Log.i(TAG, "FKeyboardListener onKeyboardHeightChanged oldHeight:" + oldHeight + " newHeight:" + newHeight);
-                }
-            };
+            startActivity(new Intent(this, BodyScrollerActivity.class));
         }
-        return mKeyboardListener;
     }
 }
