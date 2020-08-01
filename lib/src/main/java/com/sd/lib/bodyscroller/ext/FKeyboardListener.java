@@ -115,18 +115,6 @@ public class FKeyboardListener extends PopupWindow
         getTarget().post(mShowRunnable);
     }
 
-    private final Runnable mShowRunnable = new Runnable()
-    {
-        @Override
-        public void run()
-        {
-            if (mPopupWindow == null)
-                mPopupWindow = new InternalPopupWindow(mActivity);
-
-            mPopupWindow.showAtLocation(getTarget(), Gravity.NO_GRAVITY, 0, 0);
-        }
-    };
-
     /**
      * 停止监听
      */
@@ -147,6 +135,18 @@ public class FKeyboardListener extends PopupWindow
             mKeyboardHeight = 0;
         }
     }
+
+    private final Runnable mShowRunnable = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            if (mPopupWindow == null)
+                mPopupWindow = new InternalPopupWindow(mActivity);
+
+            mPopupWindow.showAtLocation(getTarget(), Gravity.NO_GRAVITY, 0, 0);
+        }
+    };
 
     private void onWindowHeightChanged(int oldHeight, int newHeight)
     {
