@@ -47,7 +47,8 @@ public class FKeyboardListener extends PopupWindow
      */
     public void addCallback(Callback callback)
     {
-        mCallbacks.put(callback, "");
+        if (callback != null)
+            mCallbacks.put(callback, "");
     }
 
     /**
@@ -57,7 +58,8 @@ public class FKeyboardListener extends PopupWindow
      */
     public void removeCallback(Callback callback)
     {
-        mCallbacks.remove(callback);
+        if (callback != null)
+            mCallbacks.remove(callback);
     }
 
     private final ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
