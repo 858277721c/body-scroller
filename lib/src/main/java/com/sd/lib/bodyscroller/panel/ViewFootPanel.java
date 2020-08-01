@@ -24,9 +24,12 @@ public class ViewFootPanel implements IFootPanel
         @Override
         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom)
         {
-            final int height = bottom - top;
-            if (mCallback != null)
-                mCallback.onHeightChanged(height);
+            if (v == getView())
+            {
+                final int height = bottom - top;
+                if (mCallback != null)
+                    mCallback.onHeightChanged(height);
+            }
         }
     };
 
