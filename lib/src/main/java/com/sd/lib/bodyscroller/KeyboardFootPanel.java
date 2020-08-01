@@ -44,7 +44,7 @@ public class KeyboardFootPanel implements IFootPanel
     }
 
     @Override
-    public int getHeight()
+    public int getPanelHeight()
     {
         return mHeight;
     }

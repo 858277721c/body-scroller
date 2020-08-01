@@ -7,7 +7,7 @@ public interface IFootPanel
      *
      * @return
      */
-    int getHeight();
+    int getPanelHeight();
 
     /**
      * 面板高度变化回调

@@ -81,7 +81,7 @@ public abstract class FBodyScroller
         {
             mActiveFootPanel = panel;
 
-            final int height = panel.getHeight();
+            final int height = panel.getPanelHeight();
             setFootHeight(height);
         }
     }
