@@ -80,6 +80,22 @@ public abstract class FBodyScroller
     }
 
     /**
+     * 清空底部面板
+     */
+    public void clearFootPanel()
+    {
+        if (mCurrentFootPanel != null)
+        {
+            removeFootPanel(mCurrentFootPanel);
+            mCurrentFootPanel = null;
+        }
+
+        mKeyboardFootPanel = null;
+        mMapFootPanel.clear();
+        mFootHeight = 0;
+    }
+
+    /**
      * 设置当前底部面板
      * <p>
      * 如果传入null，则内部判断是否设置过{@link KeyboardFootPanel}，如果设置过的话，自动把当前面板设置为{@link KeyboardFootPanel}
