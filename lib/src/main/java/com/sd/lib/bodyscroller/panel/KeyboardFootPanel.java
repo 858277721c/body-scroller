@@ -18,7 +18,7 @@ public class KeyboardFootPanel implements IFootPanel
     private final FKeyboardListener.Callback mKeyboardCallback = new FKeyboardListener.Callback()
     {
         @Override
-        public void onKeyboardHeightChanged(int oldHeight, int newHeight)
+        public void onKeyboardHeightChanged(int oldHeight, int newHeight, FKeyboardListener listener)
         {
             KeyboardFootPanel.this.setHeight(newHeight);
         }

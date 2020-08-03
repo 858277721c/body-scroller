@@ -24,7 +24,7 @@ public class KeyboardDialog extends FDialoger
     private final FKeyboardListener.Callback mKeyboardCallback = new FKeyboardListener.Callback()
     {
         @Override
-        public void onKeyboardHeightChanged(int oldHeight, int newHeight)
+        public void onKeyboardHeightChanged(int oldHeight, int newHeight, FKeyboardListener listener)
         {
             Log.i(TAG, "FKeyboardListener onKeyboardHeightChanged oldHeight:" + oldHeight + " newHeight:" + newHeight);
         }

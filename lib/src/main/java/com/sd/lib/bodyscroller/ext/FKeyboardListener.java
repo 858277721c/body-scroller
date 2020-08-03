@@ -31,7 +31,9 @@ public class FKeyboardListener
 
     private int mWindowHeight;
     private int mMaxWindowHeight;
+
     private int mKeyboardHeight;
+    private int mKeyboardVisibleHeight;
 
     private final Map<Callback, String> mCallbacks = new ConcurrentHashMap<>();
 
@@ -62,6 +64,16 @@ public class FKeyboardListener
             mCallbacks.remove(callback);
     }
 
+    /**
+     * 返回软键盘可见时候的高度
+     *
+     * @return
+     */
+    public int getKeyboardVisibleHeight()
+    {
+        return mKeyboardVisibleHeight;
+    }
+
     private final ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
     {
         @Override
@@ -88,6 +100,9 @@ public class FKeyboardListener
                 if (oldKeyboardHeight != keyboardHeight)
                 {
                     mKeyboardHeight = keyboardHeight;
+                    if (keyboardHeight > 0)
+                        mKeyboardVisibleHeight = keyboardHeight;
+
                     onKeyboardHeightChanged(oldKeyboardHeight, keyboardHeight);
                 }
             }
@@ -163,7 +178,7 @@ public class FKeyboardListener
     {
         for (Callback item : mCallbacks.keySet())
         {
-            item.onKeyboardHeightChanged(oldHeight, newHeight);
+            item.onKeyboardHeightChanged(oldHeight, newHeight, this);
         }
     }
 
@@ -244,8 +259,9 @@ public class FKeyboardListener
          *
          * @param oldHeight
          * @param newHeight
+         * @param listener
          */
-        void onKeyboardHeightChanged(int oldHeight, int newHeight);
+        void onKeyboardHeightChanged(int oldHeight, int newHeight, FKeyboardListener listener);
     }
 
     //---------- static ----------
