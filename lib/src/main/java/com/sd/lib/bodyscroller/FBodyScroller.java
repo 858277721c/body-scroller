@@ -27,6 +27,8 @@ public abstract class FBodyScroller
 
     /**
      * 添加底部面板
+     * <p>
+     * 如果面板是{@link KeyboardFootPanel}，则设置为当前面板{@link #setCurrentFootPanel(IFootPanel)}
      *
      * @param panel
      */
@@ -78,7 +80,9 @@ public abstract class FBodyScroller
     }
 
     /**
-     * 设置当前活跃的底部面板
+     * 设置当前底部面板
+     * <p>
+     * 如果传入null，则内部判断是否设置过{@link KeyboardFootPanel}，如果设置过的话，自动把当前面板设置为{@link KeyboardFootPanel}
      *
      * @param panel
      */
@@ -94,8 +98,7 @@ public abstract class FBodyScroller
             {
                 mCurrentFootPanel = mKeyboardFootPanel;
                 final int height = mKeyboardFootPanel.getPanelHeight();
-                if (height > 0)
-                    setFootHeight(height);
+                setFootHeight(height);
             }
             return;
         }

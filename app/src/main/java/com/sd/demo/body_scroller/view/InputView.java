@@ -26,15 +26,19 @@ public class InputView extends FrameLayout implements View.OnClickListener
     private final ViewInputBinding mBinding;
 
     private InputMoreView mMoreView;
+
+    private final IFootPanel mKeyboardPanel;
     private final IFootPanel mExtPanel;
 
     public InputView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
         super(context, attrs);
         mBinding = ViewInputBinding.inflate(LayoutInflater.from(context), this, true);
+
+        mKeyboardPanel = new KeyboardFootPanel((Activity) context);
         mExtPanel = new ViewFootPanel(mBinding.viewExt);
 
-        mBodyScroller.addFootPanel(new KeyboardFootPanel((Activity) context));
+        mBodyScroller.addFootPanel(mKeyboardPanel);
         mBodyScroller.addFootPanel(mExtPanel);
 
         mBinding.etContent.setOnClickListener(this);
@@ -49,7 +53,7 @@ public class InputView extends FrameLayout implements View.OnClickListener
             clickMore();
         } else if (v == mBinding.etContent)
         {
-            mBodyScroller.setCurrentFootPanel(null);
+            mBodyScroller.setCurrentFootPanel(mKeyboardPanel);
 
             mBinding.viewExt.removeAllViews();
             FKeyboardUtil.show(mBinding.etContent);
@@ -71,6 +75,11 @@ public class InputView extends FrameLayout implements View.OnClickListener
 
             mBinding.viewExt.removeAllViews();
             mBinding.viewExt.addView(getMoreView());
+            FKeyboardUtil.hide(mBinding.etContent);
+        } else
+        {
+            mBodyScroller.setCurrentFootPanel(null);
+            mBinding.viewExt.removeAllViews();
             FKeyboardUtil.hide(mBinding.etContent);
         }
     }
