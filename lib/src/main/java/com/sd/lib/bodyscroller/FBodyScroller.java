@@ -112,6 +112,9 @@ public abstract class FBodyScroller
 
     private void setFootHeight(int height)
     {
+        if (height < 0)
+            height = 0;
+
         final int old = mFootHeight;
         if (old != height)
         {
