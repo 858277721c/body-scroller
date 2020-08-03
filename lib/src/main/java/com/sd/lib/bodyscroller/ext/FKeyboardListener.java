@@ -150,6 +150,7 @@ public class FKeyboardListener
 
     private void onWindowHeightChanged(int oldHeight, int newHeight)
     {
+        // private 暂不开放
     }
 
     /**
