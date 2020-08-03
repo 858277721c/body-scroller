@@ -102,7 +102,7 @@ public class FKeyboardListener
     /**
      * 开始监听
      */
-    private final void start()
+    public final void start()
     {
         if (mActivity.isFinishing())
             return;
@@ -118,7 +118,7 @@ public class FKeyboardListener
     /**
      * 停止监听
      */
-    private final void stop()
+    public final void stop()
     {
         final Application application = mActivity.getApplication();
         application.unregisterActivityLifecycleCallbacks(mActivityLifecycleCallbacks);
