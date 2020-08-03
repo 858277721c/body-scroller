@@ -22,7 +22,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 键盘监听
  */
-public class FKeyboardListener extends PopupWindow
+public class FKeyboardListener
 {
     private final Activity mActivity;
 
