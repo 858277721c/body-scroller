@@ -71,17 +71,28 @@ public class InputView extends FrameLayout implements View.OnClickListener
     {
         if (getMoreView().getParent() != mBinding.viewExt)
         {
-            mBodyScroller.setCurrentFootPanel(mExtPanel);
-
-            mBinding.viewExt.removeAllViews();
-            mBinding.viewExt.addView(getMoreView());
-            FKeyboardUtil.hide(mBinding.etContent);
+            switchToMore();
         } else
         {
-            mBodyScroller.setCurrentFootPanel(null);
-            mBinding.viewExt.removeAllViews();
-            FKeyboardUtil.hide(mBinding.etContent);
+            switchToInput();
         }
+    }
+
+    private void switchToMore()
+    {
+        mBodyScroller.setCurrentFootPanel(mExtPanel);
+
+        mBinding.viewExt.removeAllViews();
+        mBinding.viewExt.addView(getMoreView());
+        FKeyboardUtil.hide(mBinding.etContent);
+    }
+
+    private void switchToInput()
+    {
+        mBodyScroller.setCurrentFootPanel(mKeyboardPanel);
+
+        mBinding.viewExt.removeAllViews();
+        FKeyboardUtil.show(mBinding.etContent);
     }
 
     private final FBodyScroller mBodyScroller = new FBodyScroller()
