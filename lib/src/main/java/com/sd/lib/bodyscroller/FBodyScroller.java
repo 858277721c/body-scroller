@@ -90,8 +90,13 @@ public abstract class FBodyScroller
             mCurrentFootPanel = null;
         }
 
-        mKeyboardFootPanel = null;
+        for (IFootPanel item : mMapFootPanel.keySet())
+        {
+            item.releasePanel();
+        }
         mMapFootPanel.clear();
+
+        mKeyboardFootPanel = null;
         mFootHeight = 0;
     }
 
