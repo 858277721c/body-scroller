@@ -19,12 +19,12 @@ public class KeyboardFootPanel extends BaseFootPanel
     private final FKeyboardListener.Callback mKeyboardCallback = new FKeyboardListener.Callback()
     {
         @Override
-        public void onKeyboardHeightChanged(int oldHeight, int newHeight, FKeyboardListener listener)
+        public void onKeyboardHeightChanged(int height, FKeyboardListener listener)
         {
             final HeightChangeCallback callback = getHeightChangeCallback();
             if (callback != null)
             {
-                callback.onHeightChanged(newHeight);
+                callback.onHeightChanged(height);
             } else
             {
                 releasePanel();

@@ -100,7 +100,7 @@ public class FKeyboardListener
             if (old != height)
             {
                 mWindowHeight = height;
-                onWindowHeightChanged(old, height);
+                onWindowHeightChanged(height);
 
                 if (height > mMaxWindowHeight)
                     mMaxWindowHeight = height;
@@ -113,7 +113,7 @@ public class FKeyboardListener
                     if (keyboardHeight > 0)
                         mKeyboardVisibleHeight = keyboardHeight;
 
-                    onKeyboardHeightChanged(oldKeyboardHeight, keyboardHeight);
+                    onKeyboardHeightChanged(keyboardHeight);
                 }
             }
         }
@@ -173,7 +173,7 @@ public class FKeyboardListener
         }
     };
 
-    private void onWindowHeightChanged(int oldHeight, int newHeight)
+    private void onWindowHeightChanged(int height)
     {
         // private 暂不开放
     }
@@ -181,14 +181,13 @@ public class FKeyboardListener
     /**
      * 键盘高度变化
      *
-     * @param oldHeight
-     * @param newHeight
+     * @param height
      */
-    private void onKeyboardHeightChanged(int oldHeight, int newHeight)
+    private void onKeyboardHeightChanged(int height)
     {
         for (Callback item : mCallbacks.keySet())
         {
-            item.onKeyboardHeightChanged(oldHeight, newHeight, this);
+            item.onKeyboardHeightChanged(height, this);
         }
     }
 
@@ -267,11 +266,10 @@ public class FKeyboardListener
         /**
          * 键盘高度变化回调
          *
-         * @param oldHeight
-         * @param newHeight
+         * @param height
          * @param listener
          */
-        void onKeyboardHeightChanged(int oldHeight, int newHeight, FKeyboardListener listener);
+        void onKeyboardHeightChanged(int height, FKeyboardListener listener);
     }
 
     //---------- static ----------
