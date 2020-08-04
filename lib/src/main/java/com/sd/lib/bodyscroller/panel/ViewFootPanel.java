@@ -4,10 +4,9 @@ import android.view.View;
 
 import java.lang.ref.WeakReference;
 
-public class ViewFootPanel implements IFootPanel
+public class ViewFootPanel extends BaseFootPanel
 {
     private final WeakReference<View> mView;
-    private HeightChangeCallback mCallback;
 
     public ViewFootPanel(View view)
     {
@@ -24,11 +23,17 @@ public class ViewFootPanel implements IFootPanel
         @Override
         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom)
         {
-            if (v == getView())
+            final HeightChangeCallback callback = getHeightChangeCallback();
+            if (callback != null)
             {
-                final int height = bottom - top;
-                if (mCallback != null)
-                    mCallback.onHeightChanged(height);
+                if (v == getView())
+                {
+                    final int height = bottom - top;
+                    callback.onHeightChanged(height);
+                }
+            } else
+            {
+                releasePanel();
             }
         }
     };
@@ -37,32 +42,27 @@ public class ViewFootPanel implements IFootPanel
     public int getPanelHeight()
     {
         final View view = getView();
-        if (view == null)
-            return 0;
-
-        return view.getHeight();
+        return view == null ? 0 : view.getHeight();
     }
 
     @Override
     public void initPanel(HeightChangeCallback callback)
     {
+        super.initPanel(callback);
         final View view = getView();
-        if (view == null)
-            return;
-
-        mCallback = callback;
-        view.removeOnLayoutChangeListener(mOnLayoutChangeListener);
-        view.addOnLayoutChangeListener(mOnLayoutChangeListener);
+        if (view != null)
+        {
+            view.removeOnLayoutChangeListener(mOnLayoutChangeListener);
+            view.addOnLayoutChangeListener(mOnLayoutChangeListener);
+        }
     }
 
     @Override
     public void releasePanel()
     {
+        super.releasePanel();
         final View view = getView();
-        if (view == null)
-            return;
-
-        mCallback = null;
-        view.removeOnLayoutChangeListener(mOnLayoutChangeListener);
+        if (view != null)
+            view.removeOnLayoutChangeListener(mOnLayoutChangeListener);
     }
 }
