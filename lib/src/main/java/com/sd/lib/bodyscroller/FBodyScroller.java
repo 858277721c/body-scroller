@@ -94,9 +94,16 @@ public abstract class FBodyScroller
      */
     public void clearFootPanel()
     {
+        clearFootPanel(true);
+    }
+
+    private void clearFootPanel(boolean removeCurrent)
+    {
         if (mCurrentFootPanel != null)
         {
-            removeFootPanel(mCurrentFootPanel);
+            if (removeCurrent)
+                removeFootPanel(mCurrentFootPanel);
+
             mCurrentFootPanel = null;
         }
 
@@ -164,4 +171,11 @@ public abstract class FBodyScroller
      * @param newHeight
      */
     protected abstract void onFootHeightChanged(int oldHeight, int newHeight);
+
+    @Override
+    protected void finalize() throws Throwable
+    {
+        super.finalize();
+        clearFootPanel(false);
+    }
 }
