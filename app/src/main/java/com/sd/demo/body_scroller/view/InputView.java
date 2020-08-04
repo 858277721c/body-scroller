@@ -98,12 +98,10 @@ public class InputView extends FrameLayout implements View.OnClickListener
     private final FBodyScroller mBodyScroller = new FBodyScroller()
     {
         @Override
-        protected void onFootHeightChanged(int oldHeight, final int newHeight)
+        protected void onFootHeightChanged(int height)
         {
-            final int delta = newHeight - oldHeight;
-            Log.i(TAG, "onFootHeightChanged oldHeight:" + oldHeight + " newHeight:" + newHeight + " delta:" + delta);
-
-            mBinding.llRoot.scrollTo(0, newHeight);
+            Log.i(TAG, "onFootHeightChanged height:" + height);
+            mBinding.llRoot.scrollTo(0, height);
         }
     };
 
@@ -116,5 +114,19 @@ public class InputView extends FrameLayout implements View.OnClickListener
         animatorSet.play(animatorBody).with(animatorExt);
         animatorSet.setDuration(100);
         animatorSet.start();
+    }
+
+    @Override
+    protected void onAttachedToWindow()
+    {
+        super.onAttachedToWindow();
+        mBodyScroller.start();
+    }
+
+    @Override
+    protected void onDetachedFromWindow()
+    {
+        super.onDetachedFromWindow();
+        mBodyScroller.stop();
     }
 }

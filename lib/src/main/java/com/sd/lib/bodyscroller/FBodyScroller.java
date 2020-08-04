@@ -13,7 +13,18 @@ public abstract class FBodyScroller
     private IFootPanel mCurrentFootPanel;
     private KeyboardFootPanel mKeyboardFootPanel;
 
+    private boolean mIsStarted;
     private int mFootHeight;
+
+    /**
+     * 是否已经开始监听
+     *
+     * @return
+     */
+    public boolean isStarted()
+    {
+        return mIsStarted;
+    }
 
     /**
      * 返回当前底部高度
@@ -33,6 +44,26 @@ public abstract class FBodyScroller
     public IFootPanel getCurrentFootPanel()
     {
         return mCurrentFootPanel;
+    }
+
+    /**
+     * 开始监听
+     */
+    public void start()
+    {
+        if (!mIsStarted)
+        {
+            mIsStarted = true;
+            notifyHeightChanged();
+        }
+    }
+
+    /**
+     * 停止监听
+     */
+    public void stop()
+    {
+        mIsStarted = false;
     }
 
     /**
@@ -151,6 +182,11 @@ public abstract class FBodyScroller
         }
     }
 
+    /**
+     * 设置底部高度
+     *
+     * @param height
+     */
     private void setFootHeight(int height)
     {
         if (height < 0)
@@ -160,17 +196,25 @@ public abstract class FBodyScroller
         if (old != height)
         {
             mFootHeight = height;
-            onFootHeightChanged(old, height);
+            notifyHeightChanged();
         }
+    }
+
+    /**
+     * 通知底部高度变化
+     */
+    private void notifyHeightChanged()
+    {
+        if (mIsStarted)
+            onFootHeightChanged(mFootHeight);
     }
 
     /**
      * 底部高度变化
      *
-     * @param oldHeight
-     * @param newHeight
+     * @param height
      */
-    protected abstract void onFootHeightChanged(int oldHeight, int newHeight);
+    protected abstract void onFootHeightChanged(int height);
 
     @Override
     protected void finalize() throws Throwable
