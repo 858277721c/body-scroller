@@ -65,6 +65,16 @@ public class FKeyboardListener
     }
 
     /**
+     * 返回当前软键盘高度，如果当前软键盘不可见，则返回0
+     *
+     * @return
+     */
+    public int getKeyboardHeight()
+    {
+        return mKeyboardHeight;
+    }
+
+    /**
      * 返回软键盘可见时候的高度
      *
      * @return
