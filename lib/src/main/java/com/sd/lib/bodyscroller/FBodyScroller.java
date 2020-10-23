@@ -68,8 +68,6 @@ public abstract class FBodyScroller
 
     /**
      * 添加底部面板
-     * <p>
-     * 如果面板是{@link KeyboardFootPanel}，则设置为当前面板{@link #setCurrentFootPanel(IFootPanel)}
      *
      * @param panel
      */
