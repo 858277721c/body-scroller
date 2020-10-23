@@ -17,7 +17,6 @@ import android.widget.PopupWindow;
 
 import java.util.Map;
 import java.util.WeakHashMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 键盘监听
@@ -32,10 +31,14 @@ public class FKeyboardListener
     private int mWindowHeight;
     private int mMaxWindowHeight;
 
+    /** 当前键盘高度 */
     private int mKeyboardHeight;
+    /** 键盘可见时候的高度 */
     private int mKeyboardVisibleHeight;
+    /** 缓存的键盘可见时候的高度 */
+    private static int sCachedKeyboardVisibleHeight;
 
-    private final Map<Callback, String> mCallbacks = new ConcurrentHashMap<>();
+    private final Map<Callback, String> mCallbackHolder = new WeakHashMap<>();
 
     private FKeyboardListener(Activity activity)
     {
@@ -43,14 +46,14 @@ public class FKeyboardListener
     }
 
     /**
-     * 添加回调
+     * 添加回调，内部用弱引用保存
      *
      * @param callback
      */
     public void addCallback(Callback callback)
     {
         if (callback != null)
-            mCallbacks.put(callback, "");
+            mCallbackHolder.put(callback, "");
     }
 
     /**
@@ -61,7 +64,7 @@ public class FKeyboardListener
     public void removeCallback(Callback callback)
     {
         if (callback != null)
-            mCallbacks.remove(callback);
+            mCallbackHolder.remove(callback);
     }
 
     /**
@@ -82,6 +85,16 @@ public class FKeyboardListener
     public int getKeyboardVisibleHeight()
     {
         return mKeyboardVisibleHeight;
+    }
+
+    /**
+     * 缓存的键盘可见时候的高度
+     *
+     * @return
+     */
+    public static int getCachedKeyboardVisibleHeight()
+    {
+        return sCachedKeyboardVisibleHeight;
     }
 
     private final ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener()
@@ -111,7 +124,10 @@ public class FKeyboardListener
                 {
                     mKeyboardHeight = keyboardHeight;
                     if (keyboardHeight > 0)
+                    {
                         mKeyboardVisibleHeight = keyboardHeight;
+                        sCachedKeyboardVisibleHeight = keyboardHeight;
+                    }
 
                     onKeyboardHeightChanged(keyboardHeight);
                 }
@@ -185,7 +201,7 @@ public class FKeyboardListener
      */
     private void onKeyboardHeightChanged(int height)
     {
-        for (Callback item : mCallbacks.keySet())
+        for (Callback item : mCallbackHolder.keySet())
         {
             item.onKeyboardHeightChanged(height, this);
         }
