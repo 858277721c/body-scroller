@@ -15,6 +15,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
@@ -185,7 +187,13 @@ public class FKeyboardListener
             if (mPopupWindow == null)
                 mPopupWindow = new InternalPopupWindow(mActivity);
 
-            mPopupWindow.showAtLocation(getTarget(), Gravity.NO_GRAVITY, 0, 0);
+            try
+            {
+                mPopupWindow.showAtLocation(getTarget(), Gravity.NO_GRAVITY, 0, 0);
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -201,7 +209,8 @@ public class FKeyboardListener
      */
     private void onKeyboardHeightChanged(int height)
     {
-        for (Callback item : mCallbackHolder.keySet())
+        final List<Callback> list = new ArrayList<>(mCallbackHolder.keySet());
+        for (Callback item : list)
         {
             item.onKeyboardHeightChanged(height, this);
         }
