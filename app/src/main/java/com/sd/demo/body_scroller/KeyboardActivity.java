@@ -23,13 +23,20 @@ public class KeyboardActivity extends AppCompatActivity
         mBinding = ActivityKeyboardBinding.inflate(getLayoutInflater());
         setContentView(mBinding.getRoot());
 
-        FKeyboardListener.of(this).addCallback(new FKeyboardListener.Callback()
-        {
-            @Override
-            public void onKeyboardHeightChanged(int height, FKeyboardListener listener)
-            {
-                Log.i(TAG, "FKeyboardListener onKeyboardHeightChanged height:" + height + " visibleHeight:" + listener.getKeyboardVisibleHeight());
-            }
-        });
+        /**
+         * 由于{@link FKeyboardListener}内部采用弱引用保存回调对象，所以这边回调对象要强引用
+         */
+        FKeyboardListener.of(this).addCallback(mCallback);
+
+        Log.i(TAG, "getCachedKeyboardVisibleHeight:" + FKeyboardListener.getCachedKeyboardVisibleHeight());
     }
+
+    private final FKeyboardListener.Callback mCallback = new FKeyboardListener.Callback()
+    {
+        @Override
+        public void onKeyboardHeightChanged(int height, FKeyboardListener listener)
+        {
+            Log.i(TAG, "onKeyboardHeightChanged height:" + height + " visibleHeight:" + listener.getKeyboardVisibleHeight());
+        }
+    };
 }
