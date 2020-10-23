@@ -83,8 +83,13 @@ public abstract class FBodyScroller
             @Override
             public void onHeightChanged(int height)
             {
-                if (mCurrentFootPanel == panel)
+                if (panel == mKeyboardFootPanel && height > 0)
+                {
+                    setCurrentFootPanel(panel);
+                } else if (panel == mCurrentFootPanel)
+                {
                     setFootHeight(height);
+                }
             }
         };
 
@@ -92,11 +97,7 @@ public abstract class FBodyScroller
         panel.initPanel(callback);
 
         if (panel instanceof KeyboardFootPanel)
-        {
             mKeyboardFootPanel = (KeyboardFootPanel) panel;
-            if (mCurrentFootPanel == null)
-                setCurrentFootPanel(panel);
-        }
     }
 
     /**
@@ -109,49 +110,18 @@ public abstract class FBodyScroller
         final IFootPanel.HeightChangeCallback callback = mMapFootPanel.remove(panel);
         if (callback != null)
         {
+            if (mKeyboardFootPanel == panel)
+                mKeyboardFootPanel = null;
+
             panel.releasePanel();
-            if (panel == mCurrentFootPanel)
-            {
-                if (panel == mKeyboardFootPanel)
-                    mKeyboardFootPanel = null;
 
+            if (mCurrentFootPanel == panel)
                 setCurrentFootPanel(null);
-            }
         }
-    }
-
-    /**
-     * 清空底部面板
-     */
-    public void clearFootPanel()
-    {
-        clearFootPanel(true);
-    }
-
-    private void clearFootPanel(boolean removeCurrent)
-    {
-        if (mCurrentFootPanel != null)
-        {
-            if (removeCurrent)
-                removeFootPanel(mCurrentFootPanel);
-
-            mCurrentFootPanel = null;
-        }
-
-        for (IFootPanel item : mMapFootPanel.keySet())
-        {
-            item.releasePanel();
-        }
-        mMapFootPanel.clear();
-
-        mKeyboardFootPanel = null;
-        mFootHeight = 0;
     }
 
     /**
      * 设置当前底部面板
-     * <p>
-     * 如果传入null，则内部判断是否设置过{@link KeyboardFootPanel}，如果设置过的话，自动把当前面板设置为{@link KeyboardFootPanel}
      *
      * @param panel
      */
@@ -159,16 +129,8 @@ public abstract class FBodyScroller
     {
         if (panel == null)
         {
-            if (mKeyboardFootPanel != null)
-            {
-                mCurrentFootPanel = mKeyboardFootPanel;
-                final int height = mKeyboardFootPanel.getPanelHeight();
-                setFootHeight(height);
-            } else
-            {
-                mCurrentFootPanel = null;
-                setFootHeight(0);
-            }
+            mCurrentFootPanel = null;
+            setFootHeight(0);
             return;
         }
 
@@ -215,11 +177,4 @@ public abstract class FBodyScroller
      * @param height
      */
     protected abstract void onFootHeightChanged(int height);
-
-    @Override
-    protected void finalize() throws Throwable
-    {
-        super.finalize();
-        clearFootPanel(false);
-    }
 }
