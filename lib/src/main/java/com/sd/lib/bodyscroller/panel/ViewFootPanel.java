@@ -4,6 +4,9 @@ import android.view.View;
 
 import java.lang.ref.WeakReference;
 
+/**
+ * View面板
+ */
 public class ViewFootPanel extends BaseFootPanel
 {
     private final WeakReference<View> mView;
@@ -34,7 +37,6 @@ public class ViewFootPanel extends BaseFootPanel
             {
                 final int oldHeight = oldBottom - oldTop;
                 final int height = bottom - top;
-
                 if (oldHeight != height)
                     callback.onHeightChanged(height);
             }

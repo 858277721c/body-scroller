@@ -4,13 +4,24 @@ import android.app.Activity;
 
 import com.sd.lib.bodyscroller.ext.FKeyboardListener;
 
+import java.lang.ref.WeakReference;
+
+/**
+ * 软键盘面板
+ */
 public class KeyboardFootPanel extends BaseFootPanel
 {
-    private final FKeyboardListener mKeyboardListener;
+    private final WeakReference<Activity> mActivity;
 
     public KeyboardFootPanel(Activity activity)
     {
-        mKeyboardListener = FKeyboardListener.of(activity);
+        mActivity = new WeakReference<>(activity);
+    }
+
+    private FKeyboardListener getKeyboardListener()
+    {
+        final Activity activity = mActivity.get();
+        return FKeyboardListener.of(activity);
     }
 
     /**
@@ -35,20 +46,25 @@ public class KeyboardFootPanel extends BaseFootPanel
     @Override
     public int getPanelHeight()
     {
-        return mKeyboardListener.getKeyboardHeight();
+        final FKeyboardListener listener = getKeyboardListener();
+        return listener == null ? null : listener.getKeyboardHeight();
     }
 
     @Override
     public void initPanel(HeightChangeCallback callback)
     {
         super.initPanel(callback);
-        mKeyboardListener.addCallback(mKeyboardCallback);
+        final FKeyboardListener listener = getKeyboardListener();
+        if (listener != null)
+            listener.addCallback(mKeyboardCallback);
     }
 
     @Override
     public void releasePanel()
     {
         super.releasePanel();
-        mKeyboardListener.removeCallback(mKeyboardCallback);
+        final FKeyboardListener listener = getKeyboardListener();
+        if (listener != null)
+            listener.removeCallback(mKeyboardCallback);
     }
 }
