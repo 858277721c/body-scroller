@@ -24,16 +24,19 @@ public class ViewFootPanel extends BaseFootPanel
         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom)
         {
             final HeightChangeCallback callback = getHeightChangeCallback();
-            if (callback != null)
-            {
-                if (v == getView())
-                {
-                    final int height = bottom - top;
-                    callback.onHeightChanged(height);
-                }
-            } else
+            if (callback == null)
             {
                 releasePanel();
+                return;
+            }
+
+            if (v == getView())
+            {
+                final int oldHeight = oldBottom - oldTop;
+                final int height = bottom - top;
+
+                if (oldHeight != height)
+                    callback.onHeightChanged(height);
             }
         }
     };
