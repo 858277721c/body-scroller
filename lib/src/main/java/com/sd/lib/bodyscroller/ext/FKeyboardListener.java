@@ -44,6 +44,9 @@ public class FKeyboardListener
 
     private FKeyboardListener(Activity activity)
     {
+        if (activity == null)
+            throw new NullPointerException("activity is null");
+
         mActivity = activity;
     }
 
@@ -303,6 +306,9 @@ public class FKeyboardListener
 
     public static synchronized FKeyboardListener of(Activity activity)
     {
+        if (activity == null)
+            return null;
+
         FKeyboardListener listener = MAP_LISTENER.get(activity);
         if (listener == null)
         {
@@ -318,6 +324,9 @@ public class FKeyboardListener
 
     private static synchronized void removeActivity(Activity activity)
     {
+        if (activity == null)
+            return;
+
         final FKeyboardListener listener = MAP_LISTENER.remove(activity);
         if (listener != null)
             listener.stop();
