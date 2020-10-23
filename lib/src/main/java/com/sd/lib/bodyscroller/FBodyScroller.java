@@ -95,7 +95,12 @@ public abstract class FBodyScroller
         panel.initPanel(callback);
 
         if (panel instanceof KeyboardFootPanel)
-            mKeyboardFootPanel = (KeyboardFootPanel) panel;
+        {
+            if (mKeyboardFootPanel == null)
+                mKeyboardFootPanel = (KeyboardFootPanel) panel;
+            else
+                throw new IllegalArgumentException(KeyboardFootPanel.class.getSimpleName() + " already add");
+        }
     }
 
     /**
