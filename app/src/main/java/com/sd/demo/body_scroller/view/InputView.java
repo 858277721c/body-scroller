@@ -53,10 +53,7 @@ public class InputView extends FrameLayout implements View.OnClickListener
             clickMore();
         } else if (v == mBinding.etContent)
         {
-            mBodyScroller.setCurrentFootPanel(mKeyboardPanel);
-
-            mBinding.viewExt.removeAllViews();
-            FKeyboardUtil.show(mBinding.etContent);
+            switchToInput();
         }
     }
 
