@@ -133,7 +133,7 @@ public class FKeyboardListener
                     {
                         mKeyboardVisibleHeight = keyboardHeight;
                         sCachedKeyboardVisibleHeight = keyboardHeight;
-                        notifyHeightView();
+                        notifyHeightView(mKeyboardVisibleHeight);
                     }
 
                     onKeyboardHeightChanged(keyboardHeight);
@@ -355,7 +355,8 @@ public class FKeyboardListener
         final HeightViewConfig config = new HeightViewConfig(view);
         mViewHeightConfigHolder.put(view, config);
 
-        config.updateHeight(getCachedKeyboardVisibleHeight());
+        final int height = mKeyboardVisibleHeight > 0 ? mKeyboardVisibleHeight : sCachedKeyboardVisibleHeight;
+        config.updateHeight(height);
     }
 
     /**
@@ -376,13 +377,16 @@ public class FKeyboardListener
         }
     }
 
-    private void notifyHeightView()
+    private void notifyHeightView(int height)
     {
+        if (height == 0)
+            return;
+
         if (mViewHeightConfigHolder != null)
         {
             for (HeightViewConfig item : mViewHeightConfigHolder.values())
             {
-                item.updateHeight(getCachedKeyboardVisibleHeight());
+                item.updateHeight(height);
             }
         }
     }
