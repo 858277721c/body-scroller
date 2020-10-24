@@ -80,7 +80,7 @@ public class FKeyboardHeightKeeper
         mViewHolder.put(view, config);
 
         int height = getKeyboardListener().getKeyboardVisibleHeight();
-        if (height <= 0)
+        if (height == 0)
             height = FKeyboardListener.getCachedKeyboardVisibleHeight();
 
         height = fixHeight(height);
@@ -118,6 +118,9 @@ public class FKeyboardHeightKeeper
 
     private int fixHeight(int height)
     {
+        if (height == 0)
+            return height;
+
         if (height < getMinHeight())
             height = ViewGroup.LayoutParams.WRAP_CONTENT;
         return height;
