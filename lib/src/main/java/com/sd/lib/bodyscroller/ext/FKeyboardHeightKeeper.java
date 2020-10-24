@@ -57,9 +57,7 @@ public class FKeyboardHeightKeeper
         if (mMinHeight != minHeight)
         {
             mMinHeight = minHeight;
-
-            if (mKeyboardHeight != 0)
-                notifyHeight(mKeyboardHeight);
+            notifyHeight(mKeyboardHeight);
         }
     }
 
@@ -102,7 +100,7 @@ public class FKeyboardHeightKeeper
 
     private void notifyHeight(int height)
     {
-        if (height == 0)
+        if (height <= 0)
             return;
 
         height = fixHeight(height);
@@ -118,10 +116,7 @@ public class FKeyboardHeightKeeper
 
     private int fixHeight(int height)
     {
-        if (height == 0)
-            return height;
-
-        if (height < getMinHeight())
+        if (height > 0 && height < getMinHeight())
             height = ViewGroup.LayoutParams.WRAP_CONTENT;
         return height;
     }
