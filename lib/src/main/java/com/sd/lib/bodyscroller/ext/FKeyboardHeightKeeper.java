@@ -1,6 +1,7 @@
 package com.sd.lib.bodyscroller.ext;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -8,13 +9,17 @@ import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+/**
+ * 将View的高度与键盘的高度保持一致
+ */
 public class FKeyboardHeightKeeper
 {
     private final Activity mActivity;
     private final Map<View, ViewConfig> mViewHolder = new WeakHashMap<>();
 
     private FKeyboardListener mKeyboardListener;
-    private int mKeyboardHeight;
+    private int mKeyboardHeight = 0;
+    private int mMinHeight = -1;
 
     public FKeyboardHeightKeeper(Activity activity)
     {
@@ -31,6 +36,31 @@ public class FKeyboardHeightKeeper
             mKeyboardListener.addCallback(mCallback);
         }
         return mKeyboardListener;
+    }
+
+    private int getMinHeight()
+    {
+        if (mMinHeight < 0)
+            mMinHeight = dp2px(180, mActivity);
+        return mMinHeight;
+    }
+
+    /**
+     * 设置最小高度
+     * <p>
+     * 如果键盘高度小于最小高度，则View的高度自动切换为{@link ViewGroup.LayoutParams#WRAP_CONTENT}
+     *
+     * @param minHeight
+     */
+    public void setMinHeight(int minHeight)
+    {
+        if (mMinHeight != minHeight)
+        {
+            mMinHeight = minHeight;
+
+            if (mKeyboardHeight != 0)
+                notifyHeight(mKeyboardHeight);
+        }
     }
 
     /**
@@ -88,6 +118,8 @@ public class FKeyboardHeightKeeper
 
     private int fixHeight(int height)
     {
+        if (height < getMinHeight())
+            height = ViewGroup.LayoutParams.WRAP_CONTENT;
         return height;
     }
 
@@ -133,5 +165,11 @@ public class FKeyboardHeightKeeper
                 view.setLayoutParams(params);
             }
         }
+    }
+
+    private static int dp2px(float dp, Context context)
+    {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
     }
 }
