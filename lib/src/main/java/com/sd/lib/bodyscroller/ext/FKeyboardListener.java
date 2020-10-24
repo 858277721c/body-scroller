@@ -15,7 +15,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.PopupWindow;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -133,7 +132,6 @@ public class FKeyboardListener
                     {
                         mKeyboardVisibleHeight = keyboardHeight;
                         sCachedKeyboardVisibleHeight = keyboardHeight;
-                        notifyHeightView(mKeyboardVisibleHeight);
                     }
 
                     onKeyboardHeightChanged(keyboardHeight);
@@ -332,94 +330,5 @@ public class FKeyboardListener
         final FKeyboardListener listener = MAP_LISTENER.remove(activity);
         if (listener != null)
             listener.stop();
-    }
-
-
-    //---------- view height ----------
-
-    private Map<View, HeightViewConfig> mViewHeightConfigHolder;
-
-    /**
-     * 添加键盘高度View
-     *
-     * @param view
-     */
-    public void addHeightView(View view)
-    {
-        if (view == null)
-            return;
-
-        if (mViewHeightConfigHolder == null)
-            mViewHeightConfigHolder = new WeakHashMap<>();
-
-        final HeightViewConfig config = new HeightViewConfig(view);
-        mViewHeightConfigHolder.put(view, config);
-
-        final int height = mKeyboardVisibleHeight > 0 ? mKeyboardVisibleHeight : sCachedKeyboardVisibleHeight;
-        config.updateHeight(height);
-    }
-
-    /**
-     * 移除键盘高度View
-     *
-     * @param view
-     */
-    public void removeHeightView(View view)
-    {
-        if (view == null)
-            return;
-
-        if (mViewHeightConfigHolder != null)
-        {
-            mViewHeightConfigHolder.remove(view);
-            if (mViewHeightConfigHolder.isEmpty())
-                mViewHeightConfigHolder = null;
-        }
-    }
-
-    private void notifyHeightView(int height)
-    {
-        if (height == 0)
-            return;
-
-        if (mViewHeightConfigHolder != null)
-        {
-            for (HeightViewConfig item : mViewHeightConfigHolder.values())
-            {
-                item.updateHeight(height);
-            }
-        }
-    }
-
-    private static final class HeightViewConfig
-    {
-        private final WeakReference<View> mView;
-
-        private HeightViewConfig(View view)
-        {
-            if (view == null)
-                throw new NullPointerException("view is null");
-            mView = new WeakReference<>(view);
-        }
-
-        public void updateHeight(int height)
-        {
-            if (height == 0)
-                return;
-
-            final View view = mView.get();
-            if (view == null)
-                return;
-
-            ViewGroup.LayoutParams params = view.getLayoutParams();
-            if (params == null)
-                params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-            if (params.height != height)
-            {
-                params.height = height;
-                view.setLayoutParams(params);
-            }
-        }
     }
 }

@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 
 import com.sd.demo.body_scroller.databinding.ViewInputBinding;
 import com.sd.lib.bodyscroller.FBodyScroller;
-import com.sd.lib.bodyscroller.ext.FKeyboardListener;
+import com.sd.lib.bodyscroller.ext.FKeyboardHeightKeeper;
 import com.sd.lib.bodyscroller.panel.IFootPanel;
 import com.sd.lib.bodyscroller.panel.KeyboardFootPanel;
 import com.sd.lib.bodyscroller.panel.ViewFootPanel;
@@ -26,10 +26,15 @@ public class InputView extends FrameLayout implements View.OnClickListener
     public static final String TAG = InputView.class.getSimpleName();
 
     private final ViewInputBinding mBinding;
+    /** 更多View */
     private final InputMoreView mMoreView;
 
+    /** 键盘面板 */
     private final IFootPanel mKeyboardPanel;
+    /** 底部扩展面板 */
     private final IFootPanel mExtPanel;
+    /** 键盘高度保持 */
+    private final FKeyboardHeightKeeper mKeyboardHeightKeeper;
 
     public InputView(@NonNull Context context, @Nullable AttributeSet attrs)
     {
@@ -37,17 +42,21 @@ public class InputView extends FrameLayout implements View.OnClickListener
         mBinding = ViewInputBinding.inflate(LayoutInflater.from(context), this, true);
         mMoreView = new InputMoreView(context, null);
 
+        // 创建面板
         mKeyboardPanel = new KeyboardFootPanel((Activity) context);
         mExtPanel = new ViewFootPanel(mBinding.viewExt);
 
+        // 添加面板
         mBodyScroller.addFootPanel(mKeyboardPanel);
         mBodyScroller.addFootPanel(mExtPanel);
+
+        mKeyboardHeightKeeper = new FKeyboardHeightKeeper((Activity) context);
 
         mBinding.etContent.setOnClickListener(this);
         mBinding.btnMore.setOnClickListener(this);
 
         // 同步键盘高度给底部容器
-        FKeyboardListener.of((Activity) context).addHeightView(mBinding.viewExt);
+        mKeyboardHeightKeeper.addView(mBinding.viewExt);
     }
 
     @Override
@@ -55,14 +64,17 @@ public class InputView extends FrameLayout implements View.OnClickListener
     {
         if (v == mBinding.btnMore)
         {
-            switchToMore();
+            showModeMore();
         } else if (v == mBinding.etContent)
         {
-            switchToInput();
+            showModeKeyboard();
         }
     }
 
-    private void switchToMore()
+    /**
+     * 显示更多模式
+     */
+    private void showModeMore()
     {
         mBodyScroller.setCurrentFootPanel(mExtPanel);
 
@@ -71,7 +83,10 @@ public class InputView extends FrameLayout implements View.OnClickListener
         FKeyboardUtil.hide(mBinding.etContent);
     }
 
-    private void switchToInput()
+    /**
+     * 显示键盘输入模式
+     */
+    private void showModeKeyboard()
     {
         mBodyScroller.setCurrentFootPanel(mKeyboardPanel);
 
