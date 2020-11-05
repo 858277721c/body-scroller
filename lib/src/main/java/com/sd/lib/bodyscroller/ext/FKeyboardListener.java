@@ -237,13 +237,17 @@ public class FKeyboardListener
         @Override
         public void onViewAttachedToWindow(View v)
         {
-            v.getViewTreeObserver().addOnGlobalLayoutListener(mOnGlobalLayoutListener);
+            final ViewTreeObserver observer = v.getViewTreeObserver();
+            if (observer.isAlive())
+                observer.addOnGlobalLayoutListener(mOnGlobalLayoutListener);
         }
 
         @Override
         public void onViewDetachedFromWindow(View v)
         {
-            v.getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
+            final ViewTreeObserver observer = v.getViewTreeObserver();
+            if (observer.isAlive())
+                observer.removeOnGlobalLayoutListener(mOnGlobalLayoutListener);
         }
     }
 
