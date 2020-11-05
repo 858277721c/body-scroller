@@ -57,8 +57,10 @@ public class FKeyboardListener
      */
     public void addCallback(Callback callback)
     {
-        if (callback != null)
-            mCallbackHolder.put(callback, "");
+        if (callback == null)
+            return;
+
+        mCallbackHolder.put(callback, "");
     }
 
     /**
@@ -68,8 +70,10 @@ public class FKeyboardListener
      */
     public void removeCallback(Callback callback)
     {
-        if (callback != null)
-            mCallbackHolder.remove(callback);
+        if (callback == null)
+            return;
+
+        mCallbackHolder.remove(callback);
     }
 
     /**
