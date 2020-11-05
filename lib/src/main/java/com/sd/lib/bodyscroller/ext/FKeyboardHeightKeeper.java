@@ -18,7 +18,7 @@ public class FKeyboardHeightKeeper
     private final Map<View, ViewConfig> mViewHolder = new WeakHashMap<>();
 
     private FKeyboardListener mKeyboardListener;
-    private int mKeyboardHeight = 0;
+    private int mViewHeight = 0;
     private int mMinHeight = -1;
 
     public FKeyboardHeightKeeper(Activity activity)
@@ -57,7 +57,7 @@ public class FKeyboardHeightKeeper
         if (mMinHeight != minHeight)
         {
             mMinHeight = minHeight;
-            notifyHeight(mKeyboardHeight);
+            notifyHeight(mViewHeight);
         }
     }
 
@@ -104,9 +104,9 @@ public class FKeyboardHeightKeeper
             return;
 
         height = fixHeight(height);
-        if (mKeyboardHeight != height)
+        if (mViewHeight != height)
         {
-            mKeyboardHeight = height;
+            mViewHeight = height;
             for (ViewConfig item : mViewHolder.values())
             {
                 item.updateHeight(height);
