@@ -33,13 +33,13 @@ public class KeyboardFootPanel extends BaseFootPanel
         public void onKeyboardHeightChanged(int height, FKeyboardListener listener)
         {
             final HeightChangeCallback callback = getHeightChangeCallback();
-            if (callback != null)
-            {
-                callback.onHeightChanged(height);
-            } else
+            if (callback == null)
             {
                 releasePanel();
+                return;
             }
+
+            callback.onHeightChanged(height);
         }
     };
 
@@ -47,7 +47,7 @@ public class KeyboardFootPanel extends BaseFootPanel
     public int getPanelHeight()
     {
         final FKeyboardListener listener = getKeyboardListener();
-        return listener == null ? null : listener.getKeyboardHeight();
+        return listener == null ? 0 : listener.getKeyboardHeight();
     }
 
     @Override
