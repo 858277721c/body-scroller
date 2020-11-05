@@ -73,7 +73,10 @@ public abstract class FBodyScroller
      */
     public void addFootPanel(final IFootPanel panel)
     {
-        if (panel == null || mMapFootPanel.containsKey(panel))
+        if (panel == null)
+            return;
+
+        if (mMapFootPanel.containsKey(panel))
             return;
 
         final IFootPanel.HeightChangeCallback callback = new IFootPanel.HeightChangeCallback()
@@ -83,7 +86,8 @@ public abstract class FBodyScroller
             {
                 if (panel == mKeyboardFootPanel && height > 0)
                 {
-                    setCurrentFootPanel(panel);
+                    // 如果软键盘弹出，则自动设置当前面板为软键盘面板
+                    setCurrentFootPanel(mKeyboardFootPanel);
                 } else if (panel == mCurrentFootPanel)
                 {
                     setFootHeight(height);
