@@ -2,23 +2,18 @@ package com.sd.lib.bodyscroller.panel;
 
 import android.view.View;
 
-import java.lang.ref.WeakReference;
-
 /**
  * View面板
  */
 public class ViewFootPanel extends BaseFootPanel
 {
-    private final WeakReference<View> mView;
+    private final View mView;
 
     public ViewFootPanel(View view)
     {
-        mView = new WeakReference<>(view);
-    }
-
-    private View getView()
-    {
-        return mView.get();
+        if (view == null)
+            throw new NullPointerException("view is null");
+        mView = view;
     }
 
     private final View.OnLayoutChangeListener mOnLayoutChangeListener = new View.OnLayoutChangeListener()
@@ -33,7 +28,7 @@ public class ViewFootPanel extends BaseFootPanel
                 return;
             }
 
-            if (v == getView())
+            if (v == mView)
             {
                 final int oldHeight = oldBottom - oldTop;
                 final int height = bottom - top;
@@ -46,28 +41,20 @@ public class ViewFootPanel extends BaseFootPanel
     @Override
     public int getPanelHeight()
     {
-        final View view = getView();
-        return view == null ? 0 : view.getHeight();
+        return mView.getHeight();
     }
 
     @Override
     public void initPanel(HeightChangeCallback callback)
     {
         super.initPanel(callback);
-        final View view = getView();
-        if (view != null)
-        {
-            view.removeOnLayoutChangeListener(mOnLayoutChangeListener);
-            view.addOnLayoutChangeListener(mOnLayoutChangeListener);
-        }
+        mView.addOnLayoutChangeListener(mOnLayoutChangeListener);
     }
 
     @Override
     public void releasePanel()
     {
         super.releasePanel();
-        final View view = getView();
-        if (view != null)
-            view.removeOnLayoutChangeListener(mOnLayoutChangeListener);
+        mView.removeOnLayoutChangeListener(mOnLayoutChangeListener);
     }
 }
