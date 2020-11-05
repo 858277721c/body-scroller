@@ -21,7 +21,7 @@ public abstract class FBodyScroller
      *
      * @return
      */
-    public boolean isStarted()
+    public final boolean isStarted()
     {
         return mIsStarted;
     }
@@ -31,7 +31,7 @@ public abstract class FBodyScroller
      *
      * @return
      */
-    public int getFootHeight()
+    public final int getFootHeight()
     {
         return mFootHeight;
     }
@@ -41,7 +41,7 @@ public abstract class FBodyScroller
      *
      * @return
      */
-    public IFootPanel getCurrentFootPanel()
+    public final IFootPanel getCurrentFootPanel()
     {
         return mCurrentFootPanel;
     }
