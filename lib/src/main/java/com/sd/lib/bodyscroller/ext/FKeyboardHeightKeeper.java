@@ -48,14 +48,14 @@ public class FKeyboardHeightKeeper
     private int getMinHeight()
     {
         if (mMinHeight < 0)
-            mMinHeight = dp2px(180, mActivity);
+            mMinHeight = dp2px(200, mActivity);
         return mMinHeight;
     }
 
     /**
      * 设置最小高度
      * <p>
-     * 如果键盘高度小于最小高度，则View的高度自动切换为{@link ViewGroup.LayoutParams#WRAP_CONTENT}
+     * 如果键盘高度小于最小高度，则View的高度自动切换为最小高度
      *
      * @param minHeight
      */
@@ -123,8 +123,8 @@ public class FKeyboardHeightKeeper
 
     private int fixHeight(int height)
     {
-        if (height > 0 && height < getMinHeight())
-            height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        if (height > 0)
+            return Math.max(height, getMinHeight());
         return height;
     }
 
