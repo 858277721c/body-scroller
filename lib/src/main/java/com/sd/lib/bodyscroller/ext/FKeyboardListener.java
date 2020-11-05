@@ -114,7 +114,6 @@ public class FKeyboardListener
 
             final int old = mWindowHeight;
             final int height = mRect.height();
-
             if (old != height)
             {
                 mWindowHeight = height;
@@ -175,10 +174,6 @@ public class FKeyboardListener
         {
             mPopupWindow.dismiss();
             mPopupWindow = null;
-
-            mWindowHeight = 0;
-            mMaxWindowHeight = 0;
-            mKeyboardHeight = 0;
         }
     }
 
@@ -187,6 +182,9 @@ public class FKeyboardListener
         @Override
         public void run()
         {
+            if (mActivity.isFinishing())
+                return;
+
             if (mPopupWindow == null)
                 mPopupWindow = new InternalPopupWindow(mActivity);
 
