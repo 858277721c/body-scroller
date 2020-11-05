@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
@@ -50,7 +51,15 @@ public class InputView extends FrameLayout implements View.OnClickListener
         mBodyScroller.addFootPanel(mKeyboardPanel);
         mBodyScroller.addFootPanel(mExtPanel);
 
-        mKeyboardHeightKeeper = new FKeyboardHeightKeeper((Activity) context);
+        mKeyboardHeightKeeper = new FKeyboardHeightKeeper((Activity) context)
+        {
+            @Override
+            protected void updateViewHeight(View view, ViewGroup.LayoutParams params)
+            {
+                Log.i(TAG, "updateViewHeight height:" + params.height + " view:" + view);
+                super.updateViewHeight(view, params);
+            }
+        };
 
         mBinding.etContent.setOnClickListener(this);
         mBinding.btnMore.setOnClickListener(this);

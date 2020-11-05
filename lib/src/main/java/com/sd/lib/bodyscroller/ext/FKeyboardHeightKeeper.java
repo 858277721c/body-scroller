@@ -133,7 +133,7 @@ public class FKeyboardHeightKeeper
         }
     };
 
-    private static final class ViewConfig
+    private final class ViewConfig
     {
         private final WeakReference<View> mView;
 
@@ -160,9 +160,14 @@ public class FKeyboardHeightKeeper
             if (params.height != height)
             {
                 params.height = height;
-                view.setLayoutParams(params);
+                updateViewHeight(view, params);
             }
         }
+    }
+
+    protected void updateViewHeight(View view, ViewGroup.LayoutParams params)
+    {
+        view.setLayoutParams(params);
     }
 
     private static int dp2px(float dp, Context context)
