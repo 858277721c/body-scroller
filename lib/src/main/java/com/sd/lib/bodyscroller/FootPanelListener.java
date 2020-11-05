@@ -6,7 +6,7 @@ import com.sd.lib.bodyscroller.panel.KeyboardFootPanel;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class FBodyScroller
+public abstract class FootPanelListener
 {
     private final Map<IFootPanel, IFootPanel.HeightChangeCallback> mMapFootPanel = new HashMap<>();
 

@@ -21,7 +21,7 @@
         <activity android:name=".KeyboardActivity" />
 
         <activity
-            android:name=".BodyScrollerActivity"
+            android:name=".FootPanelActivity"
             android:windowSoftInputMode="adjustNothing" />
 
     </application>

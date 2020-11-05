@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.sd.demo.body_scroller.databinding.ViewInputBinding;
-import com.sd.lib.bodyscroller.FBodyScroller;
+import com.sd.lib.bodyscroller.FootPanelListener;
 import com.sd.lib.bodyscroller.ext.FKeyboardHeightKeeper;
 import com.sd.lib.bodyscroller.ext.FKeyboardHeightLayout;
 import com.sd.lib.bodyscroller.panel.IFootPanel;
@@ -49,8 +49,8 @@ public class InputView extends FrameLayout implements View.OnClickListener
         mBottomPanel = new ViewFootPanel(mBinding.flBottomExtend);
 
         // 添加面板
-        mBodyScroller.addFootPanel(mKeyboardPanel);
-        mBodyScroller.addFootPanel(mBottomPanel);
+        mFootPanelListener.addFootPanel(mKeyboardPanel);
+        mFootPanelListener.addFootPanel(mBottomPanel);
 
         mBinding.etContent.setOnClickListener(this);
         mBinding.btnMore.setOnClickListener(this);
@@ -108,7 +108,7 @@ public class InputView extends FrameLayout implements View.OnClickListener
      */
     private void showModeMore()
     {
-        mBodyScroller.setCurrentFootPanel(mBottomPanel);
+        mFootPanelListener.setCurrentFootPanel(mBottomPanel);
 
         mBinding.flBottomExtend.removeAllViews();
         mBinding.flBottomExtend.addView(getMoreView());
@@ -130,11 +130,11 @@ public class InputView extends FrameLayout implements View.OnClickListener
      */
     private void removeBottomExtend()
     {
-        mBodyScroller.setCurrentFootPanel(null);
+        mFootPanelListener.setCurrentFootPanel(null);
         mBinding.flBottomExtend.removeAllViews();
     }
 
-    private final FBodyScroller mBodyScroller = new FBodyScroller()
+    private final FootPanelListener mFootPanelListener = new FootPanelListener()
     {
         @Override
         protected void onFootHeightChanged(int height)
@@ -155,13 +155,13 @@ public class InputView extends FrameLayout implements View.OnClickListener
     protected void onAttachedToWindow()
     {
         super.onAttachedToWindow();
-        mBodyScroller.start();
+        mFootPanelListener.start();
     }
 
     @Override
     protected void onDetachedFromWindow()
     {
         super.onDetachedFromWindow();
-        mBodyScroller.stop();
+        mFootPanelListener.stop();
     }
 }

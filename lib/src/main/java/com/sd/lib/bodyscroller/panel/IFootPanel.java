@@ -1,6 +1,6 @@
 package com.sd.lib.bodyscroller.panel;
 
-import com.sd.lib.bodyscroller.FBodyScroller;
+import com.sd.lib.bodyscroller.FootPanelListener;
 
 public interface IFootPanel
 {
@@ -12,14 +12,14 @@ public interface IFootPanel
     int getPanelHeight();
 
     /**
-     * 当面板被添加到{@link FBodyScroller}的时候触发
+     * 当面板被添加到{@link FootPanelListener}的时候触发
      *
      * @param callback
      */
     void initPanel(HeightChangeCallback callback);
 
     /**
-     * 当面板从{@link FBodyScroller}移除的时候触发
+     * 当面板从{@link FootPanelListener}移除的时候触发
      */
     void releasePanel();
 

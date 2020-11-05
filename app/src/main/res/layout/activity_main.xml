@@ -12,10 +12,10 @@
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/btn_body_scroller"
+        android:id="@+id/btn_foot_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="BodyScrollerActivity"
+        android:text="FootPanelActivity"
         android:textAllCaps="false" />
 
 </LinearLayout>

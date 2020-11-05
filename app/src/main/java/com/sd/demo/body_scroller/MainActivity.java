@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(mBinding.getRoot());
 
         mBinding.btnKeyboard.setOnClickListener(this);
-        mBinding.btnBodyScroller.setOnClickListener(this);
+        mBinding.btnFootPanel.setOnClickListener(this);
     }
 
     @Override
@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (v == mBinding.btnKeyboard)
         {
             startActivity(new Intent(this, KeyboardActivity.class));
-        } else if (v == mBinding.btnBodyScroller)
+        } else if (v == mBinding.btnFootPanel)
         {
-            startActivity(new Intent(this, BodyScrollerActivity.class));
+            startActivity(new Intent(this, FootPanelActivity.class));
         }
     }
 }
