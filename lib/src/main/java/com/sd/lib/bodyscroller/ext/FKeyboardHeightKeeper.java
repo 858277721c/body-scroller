@@ -33,7 +33,14 @@ public class FKeyboardHeightKeeper
         if (mKeyboardListener == null)
         {
             mKeyboardListener = FKeyboardListener.of(mActivity);
-            mKeyboardListener.addCallback(mCallback);
+            mKeyboardListener.addCallback(new FKeyboardListener.Callback()
+            {
+                @Override
+                public void onKeyboardHeightChanged(int height, FKeyboardListener listener)
+                {
+                    notifyHeight(height);
+                }
+            });
         }
         return mKeyboardListener;
     }
@@ -120,18 +127,6 @@ public class FKeyboardHeightKeeper
             height = ViewGroup.LayoutParams.WRAP_CONTENT;
         return height;
     }
-
-    /**
-     * 监听键盘高度
-     */
-    private final FKeyboardListener.Callback mCallback = new FKeyboardListener.Callback()
-    {
-        @Override
-        public void onKeyboardHeightChanged(int height, FKeyboardListener listener)
-        {
-            notifyHeight(height);
-        }
-    };
 
     private final class ViewConfig
     {
