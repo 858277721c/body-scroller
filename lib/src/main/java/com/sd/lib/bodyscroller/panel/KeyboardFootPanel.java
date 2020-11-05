@@ -4,24 +4,19 @@ import android.app.Activity;
 
 import com.sd.lib.bodyscroller.ext.FKeyboardListener;
 
-import java.lang.ref.WeakReference;
-
 /**
  * 软键盘面板
  */
 public class KeyboardFootPanel extends BaseFootPanel
 {
-    private final WeakReference<Activity> mActivity;
+    private final Activity mActivity;
+    private FKeyboardListener mKeyboardListener;
 
     public KeyboardFootPanel(Activity activity)
     {
-        mActivity = new WeakReference<>(activity);
-    }
-
-    private FKeyboardListener getKeyboardListener()
-    {
-        final Activity activity = mActivity.get();
-        return FKeyboardListener.of(activity);
+        if (activity == null)
+            throw new NullPointerException("activity is null");
+        mActivity = activity;
     }
 
     /**
@@ -46,7 +41,7 @@ public class KeyboardFootPanel extends BaseFootPanel
     @Override
     public int getPanelHeight()
     {
-        final FKeyboardListener listener = getKeyboardListener();
+        final FKeyboardListener listener = mKeyboardListener;
         return listener == null ? 0 : listener.getKeyboardHeight();
     }
 
@@ -54,17 +49,21 @@ public class KeyboardFootPanel extends BaseFootPanel
     public void initPanel(HeightChangeCallback callback)
     {
         super.initPanel(callback);
-        final FKeyboardListener listener = getKeyboardListener();
-        if (listener != null)
-            listener.addCallback(mKeyboardCallback);
+        if (mKeyboardListener == null)
+        {
+            mKeyboardListener = FKeyboardListener.of(mActivity);
+            mKeyboardListener.addCallback(mKeyboardCallback);
+        }
     }
 
     @Override
     public void releasePanel()
     {
         super.releasePanel();
-        final FKeyboardListener listener = getKeyboardListener();
-        if (listener != null)
-            listener.removeCallback(mKeyboardCallback);
+        if (mKeyboardListener != null)
+        {
+            mKeyboardListener.removeCallback(mKeyboardCallback);
+            mKeyboardListener = null;
+        }
     }
 }
