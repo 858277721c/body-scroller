@@ -33,14 +33,7 @@ public class FKeyboardHeightKeeper
         if (mKeyboardListener == null)
         {
             mKeyboardListener = FKeyboardListener.of(mActivity);
-            mKeyboardListener.addCallback(new FKeyboardListener.Callback()
-            {
-                @Override
-                public void onKeyboardHeightChanged(int height, FKeyboardListener listener)
-                {
-                    notifyHeight(height);
-                }
-            });
+            mKeyboardListener.addCallback(mKeyboardCallback);
         }
         return mKeyboardListener;
     }
@@ -88,7 +81,8 @@ public class FKeyboardHeightKeeper
         if (height == 0)
             height = FKeyboardListener.getCachedKeyboardVisibleHeight();
 
-        height = fixHeight(height);
+        // 检查最小高度
+        height = Math.max(height, getMinHeight());
         config.updateHeight(height);
     }
 
@@ -104,6 +98,18 @@ public class FKeyboardHeightKeeper
 
         mViewHolder.remove(view);
     }
+
+    /**
+     * 监听软键盘
+     */
+    private final FKeyboardListener.Callback mKeyboardCallback = new FKeyboardListener.Callback()
+    {
+        @Override
+        public void onKeyboardHeightChanged(int height, FKeyboardListener listener)
+        {
+            notifyHeight(height);
+        }
+    };
 
     private void notifyHeight(int height)
     {
