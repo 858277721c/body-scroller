@@ -155,7 +155,7 @@ public class FKeyboardHeightKeeper
             ViewGroup.LayoutParams params = view.getLayoutParams();
             if (params == null)
             {
-                params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height);
                 updateViewHeight(view, params);
                 return;
             }
